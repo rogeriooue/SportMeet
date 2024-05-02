@@ -1,0 +1,44 @@
+POST http://localhost:3000/api/user/account
+Content-Type: application/json
+
+{
+    "name": "Test",
+    "surname": "Tester",
+    "email": "test@test.com",
+    "password": "123456",
+    "confirmPassword": "123456"
+}
+
+###
+POST http://localhost:8080/api/user/login
+Content-Type: application/json
+
+{
+    "email": "test@test.com",
+    "password": "123456"
+}
+
+###
+POST http://localhost:3000/api/user/forgotPass
+Content-Type: application/json
+
+{
+    "email": "test@test.com"
+}
+
+
+###
+POST http://localhost:3000/api/user/newPass
+Content-Type: application/json
+
+{
+    "email": "test@test.com",
+    "recoveryCode": "123abcabc",
+    "newPassword": "1234567",
+    "confirmNewPassword": "1234567"
+}
+
+
+
+
+

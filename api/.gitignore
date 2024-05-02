@@ -1,0 +1,8 @@
+# ignore environment variables .env file in git 
+.env
+
+# ignore node_modules directory in git
+node_modules
+
+# ignore logs directory in git
+logs
