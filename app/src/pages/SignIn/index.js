@@ -119,12 +119,13 @@ export default function SignIn() {
                     {loading && <Spinner />}
 
                     <SubmitButton activeOpacity={0.7} onPress={onSubmitFormHandler}>
-                        <SubmitText>Login</SubmitText>
+                        <SubmitText>Sign In</SubmitText>
                     </SubmitButton>
 
                     <Link onPress={() => navigation.navigate('Sign Up')}>
                         <Linktext>Create your Account</Linktext>
                     </Link>
+                    
                 </Container>
             </Background>
         </TouchableWithoutFeedback>
