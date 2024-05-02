@@ -29,17 +29,35 @@ export default function SignUp() {
 
     const { user } = useContext(AuthContext)
     const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [] = useState();
+    const [loading, setLoading] = useState(false);
 
-    function handleSignUp() {
+    const onChangeNameHandler = (name) => {
         setName(name);
-        setPassword(password);
-        setConfirmPassword(confirmPassword);
-        setEmail(email);
+    };
+
+    const onChangeSurnameHandler = (surname) => {
+        setSurname(surname);
     }
+
+    const onChangeEmailHandler = (email) => {
+        setEmail(email);
+    };
+
+    const onChangePasswordHandler = (password) => {
+        setPassword(password);
+    };
+
+    const onChangeConfirmPasswordHandler = (confirmPassword) => {
+        setConfirmPassword(confirmPassword);
+    };
+
+    const onSubmitFormHandler = async (event) => {
+        setLoading(true);
+    };
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -52,7 +70,15 @@ export default function SignUp() {
                         <Input
                             placeholder="Name"
                             value={name}
-                            onChangeText={(text) => setName(text)}
+                            onChangeText={onChangeNameHandler}
+                        />
+                    </AreaInput>
+
+                    <AreaInput>
+                        <Input
+                            placeholder="Surname"
+                            value={surname}
+                            onChangeText={onChangeSurnameHandler}
                         />
                     </AreaInput>
 
@@ -61,7 +87,7 @@ export default function SignUp() {
                             placeholder="E-mail"
                             value={email}
                             autoCapitalize="none"
-                            onChangeText={(text) => setEmail(text)}
+                            onChangeText={onChangeEmailHandler}
                         />
                     </AreaInput>
 
@@ -70,8 +96,8 @@ export default function SignUp() {
                             placeholder="Password"
                             value={password}
                             autoCapitalize="none"
-                            onChangeText={(text) => setPassword(text)}
                             secureTextEntry={true}
+                            onChangeText={onChangePasswordHandler}
                         />
                     </AreaInput>
 
@@ -81,11 +107,12 @@ export default function SignUp() {
                             value={confirmPassword}
                             autoCapitalize="none"
                             secureTextEntry={true}
+                            onChangeText={onChangeConfirmPasswordHandler}
                         />
                     </AreaInput>
 
-                    <SubmitButton onPress={handleSignUp}>
-                        <SubmitText>Sign UP</SubmitText>
+                    <SubmitButton onPress={onSubmitFormHandler}>
+                        <SubmitText>Sign Up</SubmitText>
                     </SubmitButton>
 
                 </Container>
