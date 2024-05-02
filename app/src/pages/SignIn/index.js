@@ -45,6 +45,7 @@ export default function SignIn() {
     };
 
     const onSubmitFormHandler = async (event) => {
+        setLoading(true);
 
         try {
             const response = await Axios.post('http://192.168.0.14:8080/api/user/login', {
