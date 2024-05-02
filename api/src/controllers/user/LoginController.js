@@ -23,12 +23,20 @@ class LoginController {
 
             email = email.trim();
 
+            const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+            if (!emailRegex.test(email)) {
+                logger.warn("Invalid email format", { email: email });
+                return res.status(400).json({
+                    message: "Invalid email format"
+                });
+            }
+
             const user = await User.findOne({ email });
 
             if (!user) {
-                logger.warn("User does not exist or Incorrect email", { email: email ? email : "unknown" });
+                logger.warn("User does not exist", { email: email ? email : "unknown" });
                 return res.status(404).json({
-                    message: "User does not exist or Incorrect email"
+                    message: "User does not exist"
                 });
             }
 
