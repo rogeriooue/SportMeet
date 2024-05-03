@@ -1,10 +1,12 @@
 import React from 'react';
 import Axios from "axios";
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useState } from 'react';
 
 import {
+    ActivityIndicator,
     View,
     Spinner,
     Button,
@@ -26,8 +28,6 @@ import {
     Linktext
 } from './styles';
 
-import { useNavigation } from '@react-navigation/native';
-// import { set } from 'mongoose'; // It´s not used yet.
 
 export default function SignIn() {
     const navigation = useNavigation();
@@ -47,6 +47,8 @@ export default function SignIn() {
 
     const onSubmitFormHandler = async (event) => {
 
+        setLoading(true);
+
         try {
             const response = await Axios.post('http://192.168.0.14:8080/api/user/login', {
                 email: email,
@@ -59,10 +61,13 @@ export default function SignIn() {
                 await AsyncStorage.setItem('token', token);
 
                 alert(`Status: ${response.status}, Message: ${response.data.message}`);
+
                 setLoading(false);
                 setEmail('');
                 setPassword('');
+                
                 console.log(message);
+
                 // navigation.navigate('Home'); //  Home or Menu screen is not created yet.
 
             } else {
@@ -70,15 +75,15 @@ export default function SignIn() {
             }
 
         } catch (error) {
+            setLoading(false);
             if (error.response) {
                 alert(`Status: ${error.response.status}, Message: ${error.response.data.message}`);
                 console.error(error);
-                setLoading(false);
             } else {
                 alert(`Failed to Sign In. Please try again. ${error}`);
             }
             console.error(error);
-            setLoading(false);
+
         }
     };
 
@@ -116,7 +121,7 @@ export default function SignIn() {
                         <Linktext>Forgot my Password</Linktext>
                     </Link>
 
-                    {loading && <Spinner />}
+                    {loading && <ActivityIndicator size="large" color="#0000ff" />}
 
                     <SubmitButton activeOpacity={0.7} onPress={onSubmitFormHandler}>
                         <SubmitText>Sign In</SubmitText>
@@ -125,7 +130,7 @@ export default function SignIn() {
                     <Link onPress={() => navigation.navigate('Sign Up')}>
                         <Linktext>Create your Account</Linktext>
                     </Link>
-                    
+
                 </Container>
             </Background>
         </TouchableWithoutFeedback>

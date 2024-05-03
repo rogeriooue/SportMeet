@@ -1,5 +1,6 @@
 import React from "react";
 import Axios from "axios";
+import { useNavigation } from '@react-navigation/native';
 
 import {
     useContext,
@@ -8,6 +9,8 @@ import {
 } from 'react';
 
 import {
+    ActivityIndicator,
+    Alert,
     Platform,
     TouchableWithoutFeedback,
     Keyboard,
@@ -25,7 +28,6 @@ import {
 
 import { AuthContext } from "../../contexts/auth";
 
-import { useNavigation } from '@react-navigation/native';
 
 export default function SignUp() {
     const navigation = useNavigation();
@@ -60,6 +62,8 @@ export default function SignUp() {
 
     const onSubmitFormHandler = async (event) => {
 
+        setLoading(true);
+
         try {
             const response = await Axios.post('http://192.168.0.14:8080/api/user/account', {
                 name: name,
@@ -73,6 +77,7 @@ export default function SignUp() {
                 const { user, message } = response.data;
 
                 alert(`Status: ${response.status}, Message: ${response.data.message}`);
+
                 setLoading(false);
                 setName('');
                 setSurname('');
@@ -82,7 +87,7 @@ export default function SignUp() {
 
                 console.log(message);
 
-                navigation.navigate('SignIn');
+                navigation.navigate('Sign In');
 
             } else {
                 throw new Error(`User Sign Up Failed: ${response.status}, ${response.data.message}`);
@@ -97,7 +102,6 @@ export default function SignUp() {
                 alert(`Failed to Sign Up. Please try again. ${error}`);
             }
             console.error(error);
-            
         }
     };
 
@@ -153,7 +157,7 @@ export default function SignUp() {
                         />
                     </AreaInput>
 
-                    {loading && <Spinner />}
+                    {loading && <ActivityIndicator size="large" color="#0000ff" />}
 
                     <SubmitButton onPress={onSubmitFormHandler}>
                         <SubmitText>Sign Up</SubmitText>
