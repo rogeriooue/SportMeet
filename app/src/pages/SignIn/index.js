@@ -44,8 +44,12 @@ export default function SignIn() {
         setPassword(password);
     };
 
-    const onSubmitFormHandler = async (event) => {
+    const onButtonPress = () => {
         setLoading(true);
+        onSubmitFormHandler();
+    };
+
+    const onSubmitFormHandler = async (event) => {
 
         try {
             const response = await Axios.post('http://192.168.0.14:8080/api/user/login', {
@@ -66,7 +70,7 @@ export default function SignIn() {
                 // navigation.navigate('Home'); //  Home or Menu screen is not created yet.
 
             } else {
-                throw new Error(`Autentication Failed: ${response.status}, ${response.data.message}`);
+                throw new Error(`User Sign In Failed: ${response.status}, ${response.data.message}`);
             }
 
         } catch (error) {
@@ -75,7 +79,7 @@ export default function SignIn() {
                 console.error(error);
                 setLoading(false);
             } else {
-                alert(`Failed to sign in. Please try again. ${error}`);
+                alert(`Failed to Sign In. Please try again. ${error}`);
             }
             console.error(error);
             setLoading(false);
@@ -118,7 +122,7 @@ export default function SignIn() {
 
                     {loading && <Spinner />}
 
-                    <SubmitButton activeOpacity={0.7} onPress={onSubmitFormHandler}>
+                    <SubmitButton activeOpacity={0.7} onPress={onButtonPress} >
                         <SubmitText>Sign In</SubmitText>
                     </SubmitButton>
 
@@ -131,3 +135,4 @@ export default function SignIn() {
         </TouchableWithoutFeedback>
     )
 }
+

@@ -27,7 +27,7 @@ import { AuthContext } from "../../contexts/auth";
 
 export default function SignUp() {
 
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
@@ -55,8 +55,53 @@ export default function SignUp() {
         setConfirmPassword(confirmPassword);
     };
 
+    const onButtonPress = () => {
+        setLoading(true);
+        onSubmitFormHandler();
+    };
+
     const onSubmitFormHandler = async (event) => {
         setLoading(true);
+
+        try {
+            const response = await Axios.post('http://192.168.0.14:8080/api/user/account', {
+                name: name,
+                surname: surname,
+                email: email,
+                password: password,
+                confirmPassword: confirmPassword
+            });
+
+            if (response.status === 200) {
+                const { user, message } = response.data;
+
+                alert(`Status: ${response.status}, Message: ${response.data.message}`);
+                setLoading(false);
+                setName('');
+                setSurname('');
+                setEmail('');
+                setPassword('');
+                setConfirmPassword('');
+
+                console.log(message);
+
+                navigation.navigate('SignIn');
+
+            } else {
+                throw new Error(`User Sign Up Failed: ${response.status}, ${response.data.message}`);
+            }
+
+        } catch (error) {
+            if (error.response) {
+                alert(`Status: ${error.response.status}, Message: ${error.response.data.message}`);
+                console.error(error);
+                setLoading(false);
+            } else {
+                alert(`Failed to Sign Up. Please try again. ${error}`);
+            }
+            console.error(error);
+            setLoading(false);
+        }
     };
 
     return (
@@ -111,7 +156,9 @@ export default function SignUp() {
                         />
                     </AreaInput>
 
-                    <SubmitButton onPress={onSubmitFormHandler}>
+                    {loading && <Spinner />}
+
+                    <SubmitButton onPress={onButtonPress}>
                         <SubmitText>Sign Up</SubmitText>
                     </SubmitButton>
 
