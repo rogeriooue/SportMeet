@@ -25,7 +25,10 @@ import {
 
 import { AuthContext } from "../../contexts/auth";
 
+import { useNavigation } from '@react-navigation/native';
+
 export default function SignUp() {
+    const navigation = useNavigation();
 
     const { user } = useContext(AuthContext);
     const [name, setName] = useState('');
@@ -55,13 +58,7 @@ export default function SignUp() {
         setConfirmPassword(confirmPassword);
     };
 
-    const onButtonPress = () => {
-        setLoading(true);
-        onSubmitFormHandler();
-    };
-
     const onSubmitFormHandler = async (event) => {
-        setLoading(true);
 
         try {
             const response = await Axios.post('http://192.168.0.14:8080/api/user/account', {
@@ -72,7 +69,7 @@ export default function SignUp() {
                 confirmPassword: confirmPassword
             });
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 const { user, message } = response.data;
 
                 alert(`Status: ${response.status}, Message: ${response.data.message}`);
@@ -92,15 +89,15 @@ export default function SignUp() {
             }
 
         } catch (error) {
+            setLoading(false);
             if (error.response) {
                 alert(`Status: ${error.response.status}, Message: ${error.response.data.message}`);
                 console.error(error);
-                setLoading(false);
             } else {
                 alert(`Failed to Sign Up. Please try again. ${error}`);
             }
             console.error(error);
-            setLoading(false);
+            
         }
     };
 
@@ -158,7 +155,7 @@ export default function SignUp() {
 
                     {loading && <Spinner />}
 
-                    <SubmitButton onPress={onButtonPress}>
+                    <SubmitButton onPress={onSubmitFormHandler}>
                         <SubmitText>Sign Up</SubmitText>
                     </SubmitButton>
 

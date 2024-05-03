@@ -91,6 +91,11 @@ export default function ForgotPassword() {
                             onChangeText={onChangeConfirmNewPasswordHandler}
                         />
                     </AreaInput>
+
+                    <SubmitButton>
+                        <SubmitText>Update Password</SubmitText>
+                    </SubmitButton>
+
                 </Container>
             </Background>
         </TouchableWithoutFeedback>

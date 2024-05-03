@@ -29,7 +29,7 @@ function AuthRoutes() {
                         borderBottomColor: '#00B94A',
                     },
                     headerTintColor: '#FFF',
-                    headerTitle: 'Voltar',
+                    headerTitle: 'Return',
                     headerBackTitleVisible: false,
                 }}
             />
@@ -44,7 +44,7 @@ function AuthRoutes() {
                         borderBottomColor: '#00B94A',
                     },
                     headerTintColor: '#FFF',
-                    headerTitle: 'Voltar',
+                    headerTitle: 'Return',
                     headerBackTitleVisible: false,
                 }}
             />

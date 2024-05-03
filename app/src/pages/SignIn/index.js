@@ -44,10 +44,6 @@ export default function SignIn() {
         setPassword(password);
     };
 
-    const onButtonPress = () => {
-        setLoading(true);
-        onSubmitFormHandler();
-    };
 
     const onSubmitFormHandler = async (event) => {
 
@@ -122,7 +118,7 @@ export default function SignIn() {
 
                     {loading && <Spinner />}
 
-                    <SubmitButton activeOpacity={0.7} onPress={onButtonPress} >
+                    <SubmitButton activeOpacity={0.7} onPress={onSubmitFormHandler}>
                         <SubmitText>Sign In</SubmitText>
                     </SubmitButton>
 
