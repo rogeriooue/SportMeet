@@ -2,6 +2,12 @@ import React from "react";
 import Axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 
+import { 
+    BASE_URL, 
+    PORT, 
+    ENDPOINT_SIGNUP
+} from '@env';
+
 import {
     useContext,
     useState,
@@ -31,6 +37,8 @@ import { AuthContext } from "../../contexts/auth";
 
 export default function SignUp() {
     const navigation = useNavigation();
+
+    const urlSignUp = `${BASE_URL}:${PORT}${ENDPOINT_SIGNUP}`;
 
     const { user } = useContext(AuthContext);
     const [name, setName] = useState('');
@@ -65,7 +73,7 @@ export default function SignUp() {
         setLoading(true);
 
         try {
-            const response = await Axios.post('http://192.168.0.14:8080/api/user/account', {
+            const response = await Axios.post(urlSignUp, {
                 name: name,
                 surname: surname,
                 email: email,

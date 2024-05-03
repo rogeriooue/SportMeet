@@ -3,6 +3,12 @@ import Axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { 
+    BASE_URL, 
+    PORT, 
+    ENDPOINT_SIGNIN
+} from '@env';
+
 import { useState } from 'react';
 
 import {
@@ -32,6 +38,8 @@ import {
 export default function SignIn() {
     const navigation = useNavigation();
 
+    const urlSignIn = `${BASE_URL}:${PORT}${ENDPOINT_SIGNIN}`;
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -50,7 +58,7 @@ export default function SignIn() {
         setLoading(true);
 
         try {
-            const response = await Axios.post('http://192.168.0.14:8080/api/user/login', {
+            const response = await Axios.post(urlSignIn, {
                 email: email,
                 password: password
             });

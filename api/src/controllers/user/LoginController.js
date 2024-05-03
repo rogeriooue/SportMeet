@@ -62,7 +62,7 @@ class LoginController {
 
             logger.info("User logged in successfully", { email: email });
 
-            res.status(200).json({
+            return res.status(200).json({
                 user: {
                     name: user.name,
                     email: user.email
@@ -73,7 +73,7 @@ class LoginController {
 
         } catch (error) {
             logger.error(error.message, { email: email ? email : "unknown" });
-            res.status(500).json({
+            return res.status(500).json({
                 message: error.message
             });
         }

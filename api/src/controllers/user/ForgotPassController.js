@@ -128,7 +128,7 @@ class ForgotPassController {
 
         } catch (error) {
             logger.error(error.message, { email: email ? email : "unknown" });
-            res.status(500).json({
+            return res.status(500).json({
                 message: error.message
             });
         }

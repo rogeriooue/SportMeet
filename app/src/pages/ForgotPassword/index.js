@@ -1,5 +1,13 @@
 import React from "react";
 import Axios from "axios";
+
+import { 
+    BASE_URL, 
+    PORT, 
+    ENDPOINT_FORGOT_PASSWORD,
+    ENDPOINT_NEW_PASSWORD
+} from '@env';
+
 import { useNavigation } from '@react-navigation/native';
 
 import { useState } from 'react';
@@ -23,6 +31,9 @@ import {
 
 export default function ForgotPassword() {
     const navigation = useNavigation();
+
+    const urlForgotPass = `${BASE_URL}:${PORT}${ENDPOINT_FORGOT_PASSWORD}`;
+    const urlNewPass = `${BASE_URL}:${PORT}${ENDPOINT_NEW_PASSWORD}`;
 
     const [email, setEmail] = useState('');
     const [recoveryCode, setRecoveryCode] = useState('');
@@ -51,7 +62,7 @@ export default function ForgotPassword() {
         setLoading(true);
 
         try {
-            const response = await Axios.post('http://192.168.0.14:8080/api/user/forgotPass', {
+            const response = await Axios.post(urlForgotPass, {
                 email: email
             });
 
@@ -83,7 +94,7 @@ export default function ForgotPassword() {
         setLoading(true);
 
         try {
-            const response = await Axios.put('http://192.168.0.14:8080/api/user/newPass', {
+            const response = await Axios.put(urlNewPass, {
                 email: email,
                 recoveryCode: recoveryCode,
                 newPassword: newPassword,
