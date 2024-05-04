@@ -92,7 +92,7 @@ class AccountController {
                 if (error) {
                     logger.error("Error sending email to created account", { email: email });
                     return res.status(500).json({
-                        message: "Error sending email to created account"
+                        message: "User was created successfully, but we encountered an error while sending the account creation email."
                     });
                 } else {
                     logger.info("User Account created successfully", { email: email });
