@@ -132,17 +132,16 @@ class NewPassController {
                     return res.status(500).json({
                         message: "Error sending password updated confirmation email"
                     });
+                } else {
+                    logger.info("Password updated successfully", { email: email });
+                    return res.status(200).json({
+                        user: {
+                            name: updatedUser.name,
+                            email: updatedUser.email
+                        },
+                        message: "Password updated successfully"
+                    });
                 }
-            });
-
-            logger.info("Password updated successfully", { email: email });
-
-            return res.status(200).json({
-                user: {
-                    name: updatedUser.name,
-                    email: updatedUser.email
-                },
-                message: "Password updated successfully"
             });
 
         } catch (error) {
