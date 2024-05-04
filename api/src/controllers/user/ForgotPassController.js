@@ -96,7 +96,7 @@ class ForgotPassController {
                 subject: "Forgot Password - SportMeet",
                 html:
                     `
-                    <h1>Forgot Password - SportMeet</h1>
+                    <h1>Forgot Password</h1>
                     <p>Hello, ${user.name}!</p>
                     <p>We’ve received a request to reset the password for your SportMeet account. No changes have been made to your account yet.</p>
                     <p>You can create a new password using the following code:</p>
