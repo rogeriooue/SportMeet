@@ -21,6 +21,7 @@ class AccountController {
             name = name.trim();
             surname = surname.trim();
             email = email.trim();
+            email = email.toLowerCase();
 
             if (!name || !surname || !email || !password || !confirmPassword) {
                 logger.warn("All fields are required", { email: email ? email : "unknown" });

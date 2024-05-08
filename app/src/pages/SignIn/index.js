@@ -3,9 +3,9 @@ import Axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { 
-    BASE_URL, 
-    PORT, 
+import {
+    BASE_URL,
+    PORT,
     ENDPOINT_SIGNIN
 } from '@env';
 
@@ -13,10 +13,6 @@ import { useState } from 'react';
 
 import {
     ActivityIndicator,
-    View,
-    Spinner,
-    Button,
-    Text,
     Platform,
     TouchableWithoutFeedback,
     Keyboard
@@ -64,21 +60,23 @@ export default function SignIn() {
             });
 
             if (response.status === 200) {
+                setLoading(false);
+
                 const { user, token, message } = response.data;
 
                 await AsyncStorage.setItem('token', token);
 
                 alert(`Status: ${response.status}, Message: ${response.data.message}`);
 
-                setLoading(false);
                 setEmail('');
                 setPassword('');
-                
+
                 console.log(message);
 
                 // navigation.navigate('Home'); //  Home or Menu screen is not created yet.
 
             } else {
+                setLoading(false);
                 throw new Error(`User Sign In Failed: ${response.status}, ${response.data.message}`);
             }
 

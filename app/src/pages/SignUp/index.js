@@ -2,9 +2,9 @@ import React from "react";
 import Axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 
-import { 
-    BASE_URL, 
-    PORT, 
+import {
+    BASE_URL,
+    PORT,
     ENDPOINT_SIGNUP
 } from '@env';
 
@@ -82,11 +82,12 @@ export default function SignUp() {
             });
 
             if (response.status === 201) {
+                setLoading(false);
+
                 const { user, message } = response.data;
 
                 alert(`Status: ${response.status}, Message: ${response.data.message}`);
 
-                setLoading(false);
                 setName('');
                 setSurname('');
                 setEmail('');
@@ -98,6 +99,7 @@ export default function SignUp() {
                 navigation.navigate('Sign In');
 
             } else {
+                setLoading(false);
                 throw new Error(`User Sign Up Failed: ${response.status}, ${response.data.message}`);
             }
 

@@ -1,9 +1,9 @@
 import React from "react";
 import Axios from "axios";
 
-import { 
-    BASE_URL, 
-    PORT, 
+import {
+    BASE_URL,
+    PORT,
     ENDPOINT_FORGOT_PASSWORD,
     ENDPOINT_NEW_PASSWORD
 } from '@env';
@@ -67,13 +67,16 @@ export default function ForgotPassword() {
             });
 
             if (response.status === 200) {
+                setLoading(false);
+
                 const { message } = response.data;
 
-                setLoading(false);
+                console.log(message);
 
                 alert(`Status: ${response.status}, Message: ${response.data.message}`);
 
             } else {
+                setLoading(false);
                 throw new Error(`Forgot Password Failed: Status: ${response.status}, Message: ${response.data.message}`);
             }
 
@@ -102,9 +105,9 @@ export default function ForgotPassword() {
             });
 
             if (response.status === 200) {
-                const { message } = response.data;
-
                 setLoading(false);
+
+                const { message } = response.data;
 
                 alert(`Status: ${response.status}, Message: ${response.data.message}`);
 
@@ -113,6 +116,7 @@ export default function ForgotPassword() {
                 navigation.navigate('Sign In');
 
             } else {
+                setLoading(false);
                 throw new Error(`Update Password Failed: Status: ${response.status}, Message: ${response.data.message}`);
             }
 

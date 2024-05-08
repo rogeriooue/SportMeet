@@ -13,7 +13,7 @@ async function main() {
 
         logger.info("Connected to MongoDB");
 
-    } catch(error) {
+    } catch (error) {
         logger.error("Error connecting to MongoDB");
     }
 }

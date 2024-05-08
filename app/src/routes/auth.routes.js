@@ -1,12 +1,13 @@
 import React from "react";
 import { View, ActivityIndicator } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import ForgotPassword from "../pages/ForgotPassword";
 
-const AuthStack = createNativeStackNavigator();
+const AuthStack = createStackNavigator();
 
 function AuthRoutes() {
     return (
@@ -15,7 +16,7 @@ function AuthRoutes() {
                 name="Sign In"
                 component={SignIn}
                 options={{
-                    headerShown: false
+                    headerShown: false,
                 }}
             />
 
@@ -29,8 +30,13 @@ function AuthRoutes() {
                         borderBottomColor: '#00B94A',
                     },
                     headerTintColor: '#FFF',
-                    headerTitle: 'Return',
-                    headerBackTitleVisible: false,
+                    headerBackTitle: 'Return',
+                    headerBackTitleVisible: true,
+                }}
+                screenOptions={{
+                    gestureEnabled: true,
+                    gestureDirection: 'horizontal',
+                    cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
                 }}
             />
 
@@ -44,8 +50,13 @@ function AuthRoutes() {
                         borderBottomColor: '#00B94A',
                     },
                     headerTintColor: '#FFF',
-                    headerTitle: 'Return',
-                    headerBackTitleVisible: false,
+                    headerBackTitle: 'Return',
+                    headerBackTitleVisible: true,
+                }}
+                screenOptions={{
+                    gestureEnabled: true,
+                    gestureDirection: 'horizontal',
+                    cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
                 }}
             />
         </AuthStack.Navigator>

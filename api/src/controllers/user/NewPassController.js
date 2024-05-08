@@ -20,6 +20,7 @@ class NewPassController {
             } = req.body;
 
             email = email.trim();
+            email = email.toLowerCase();
             recoveryCode = recoveryCode.trim();
 
             if (!email || !recoveryCode || !newPassword || !confirmNewPassword) {
@@ -130,7 +131,7 @@ class NewPassController {
                 if (error) {
                     logger.error("Error sending password updated confirmation email", { email: email });
                     return res.status(500).json({
-                        message: "Password has been successfully updated, but we encountered an error while sending the confirmation email" 
+                        message: "Password has been successfully updated, but we encountered an error while sending the confirmation email"
                     });
                 } else {
                     logger.info("Password updated successfully", { email: email });
