@@ -1,7 +1,7 @@
 import React from "react";
 import { View, ActivityIndicator } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
@@ -11,12 +11,18 @@ const AuthStack = createStackNavigator();
 
 function AuthRoutes() {
     return (
-        <AuthStack.Navigator>
+        <AuthStack.Navigator
+            screenOptions={{
+                gestureEnabled: true,
+                gestureDirection: 'horizontal',
+            }}
+        >
             <AuthStack.Screen
                 name="Sign In"
                 component={SignIn}
                 options={{
                     headerShown: false,
+                    gestureEnabled: false
                 }}
             />
 
@@ -24,6 +30,7 @@ function AuthRoutes() {
                 name="Sign Up"
                 component={SignUp}
                 options={{
+                    headerTitle: '',
                     headerStyle: {
                         backgroundColor: '#3B3DBF',
                         borderBottomWidth: 1,
@@ -32,11 +39,6 @@ function AuthRoutes() {
                     headerTintColor: '#FFF',
                     headerBackTitle: 'Return',
                     headerBackTitleVisible: true,
-                }}
-                screenOptions={{
-                    gestureEnabled: true,
-                    gestureDirection: 'horizontal',
-                    cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
                 }}
             />
 
@@ -44,6 +46,7 @@ function AuthRoutes() {
                 name="Forgot Password"
                 component={ForgotPassword}
                 options={{
+                    headerTitle: '',
                     headerStyle: {
                         backgroundColor: '#3B3DBF',
                         borderBottomWidth: 1,
@@ -52,11 +55,6 @@ function AuthRoutes() {
                     headerTintColor: '#FFF',
                     headerBackTitle: 'Return',
                     headerBackTitleVisible: true,
-                }}
-                screenOptions={{
-                    gestureEnabled: true,
-                    gestureDirection: 'horizontal',
-                    cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
                 }}
             />
         </AuthStack.Navigator>

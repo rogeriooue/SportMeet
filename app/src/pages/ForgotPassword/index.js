@@ -16,8 +16,7 @@ import {
     ActivityIndicator,
     Platform,
     TouchableWithoutFeedback,
-    Keyboard,
-    Spinner
+    Keyboard
 } from 'react-native';
 
 import {
