@@ -1,6 +1,4 @@
 import React from "react";
-import { View, ActivityIndicator } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import SignIn from '../pages/SignIn';
