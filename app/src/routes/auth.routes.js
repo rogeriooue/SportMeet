@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import ForgotPassword from "../pages/ForgotPassword";
+import CreateEvent from "../pages/CreateEvent";
 
 const AuthStack = createStackNavigator();
 
@@ -58,5 +59,7 @@ function AuthRoutes() {
         </AuthStack.Navigator>
     )
 }
+
+
 
 export default AuthRoutes;
