@@ -129,7 +129,7 @@ export default function SignIn() {
 
                     {loading && <ActivityIndicator size="large" color="#0000ff" />}
 
-                    <SubmitButton activeOpacity={0.7} onPress={onSubmitFormHandler}>
+                    <SubmitButton activeOpacity={0.7} /*onPress={onSubmitFormHandler}*/onPress={() => navigation.navigate('Home')}>
                         <SubmitText>Sign In</SubmitText>
                     </SubmitButton>
 
@@ -142,4 +142,3 @@ export default function SignIn() {
         </TouchableWithoutFeedback>
     )
 }
-

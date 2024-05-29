@@ -1,6 +1,7 @@
 import React, { createContext, useState } from "react";
 //import api from "../services/api";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const AuthContext = createContext({});
 
@@ -29,8 +30,17 @@ function AuthProvider({ children }) {
 
     }
 
+    /*
+    async function signOut(){
+        await AsyncStorage.clear()
+        .then(()=> {
+            setUser(null);
+        })
+    }
+    */
+
     return (
-        <AuthContext.Provider value={{ user, signUp }}>
+        <AuthContext.Provider value={{ user, signUp/*, SignOut */}}>
             {children}
         </AuthContext.Provider>
     )
