@@ -1,15 +1,13 @@
-import React from 'react';
-import Axios from "axios";
+import React, { useState, useContext } from 'react';
+import Axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../../contexts/auth';
 
 import {
     BASE_URL,
     PORT,
     ENDPOINT_SIGNIN
 } from '@env';
-
-import { useState } from 'react';
 
 import {
     ActivityIndicator,
@@ -39,6 +37,8 @@ export default function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const { token, setToken } = useContext(AuthContext);
+    const { name, setName } = useContext(AuthContext);
 
     const onChangeEmailHandler = (email) => {
         setEmail(email);
@@ -64,16 +64,16 @@ export default function SignIn() {
 
                 const { user, token, message } = response.data;
 
-                await AsyncStorage.setItem('token', token);
-
                 alert(`Status: ${response.status}, Message: ${response.data.message}`);
 
                 setEmail('');
                 setPassword('');
 
+                setName(user.name);
+                setToken(token);
+
                 console.log(message);
 
-                // navigation.navigate('Home'); //  Home or Menu screen is not created yet.
 
             } else {
                 setLoading(false);
@@ -129,7 +129,7 @@ export default function SignIn() {
 
                     {loading && <ActivityIndicator size="large" color="#0000ff" />}
 
-                    <SubmitButton activeOpacity={0.7} /*onPress={onSubmitFormHandler}*/onPress={() => navigation.navigate('Home')}>
+                    <SubmitButton activeOpacity={0.7} onPress={onSubmitFormHandler}>
                         <SubmitText>Sign In</SubmitText>
                     </SubmitButton>
 

@@ -1,5 +1,5 @@
-import React from "react";
-import Axios from "axios";
+import React from 'react';
+import Axios from 'axios';
 
 import {
     BASE_URL,
@@ -27,6 +27,7 @@ import {
     SubmitButton,
     SubmitText
 } from '../SignIn/styles';
+
 
 export default function ForgotPassword() {
     const navigation = useNavigation();

@@ -1,9 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import { Container, Title } from "./styles";
+import { Container, Title } from './styles';
 
-export default function Header({title}){
-    return(
+
+export default function Header({ title }) {
+
+    return (
         <Container>
             {title && (
                 <Title>{title}</Title>

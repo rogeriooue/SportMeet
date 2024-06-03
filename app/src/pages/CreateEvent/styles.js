@@ -35,7 +35,8 @@ export default StyleSheet.create({
 
     },
     eventLocation: {
-
+        marginBottom: 20,
+        marginTop: 20,
     },
     eventLocationButton: {
 

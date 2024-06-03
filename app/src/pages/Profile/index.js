@@ -1,33 +1,36 @@
-import React from "react";
-import { Container, Message, Name, NewLink, LogoutButton, LogoutText, NewText } from "./styles";
-import { useNavigation } from "@react-navigation/native";
-import { useState, useContext } from "react";
+import React from 'react';
+import { Container, Message, Name, NewLink, LogoutButton, LogoutText, NewText } from './styles';
+import { useNavigation } from '@react-navigation/native';
+import { useState, useContext } from 'react';
 
-import { AuthContext } from "../../contexts/auth";
-import SignIn from "../SignIn";
+import { AuthContext } from '../../contexts/auth';
+import SignIn from '../SignIn';
 
-export default function Profile(){
+
+export default function Profile() {
+
     const navigation = useNavigation();
-    const {} = useContext(AuthContext);
-    return(
+    const { signOut, name } = useContext(AuthContext);
+
+    return (
         <Container>
             <Message>
-                Bem-Vindo de Volta!
+                Welcome!
             </Message>
 
             <Name numberOfLines={1}>
-                Albert Leme de Brito
+                {name}
             </Name>
 
             <NewLink>
                 <NewText>
-                    Fazer Registro
+                    Sign Up
                 </NewText>
             </NewLink>
 
-            <LogoutButton /*onPress={() => navigation.navigate('Sign Up')}*/>
+            <LogoutButton onPress={async () => { await signOut() }}>
                 <LogoutText>
-                    Sair
+                    Sign Out
                 </LogoutText>
             </LogoutButton>
         </Container>

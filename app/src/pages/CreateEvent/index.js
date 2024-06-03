@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Picker } from '@react-native-picker/picker';
 
 import styles from '../CreateEvent/styles';
 
@@ -27,7 +27,7 @@ export default function CreateEvent() {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState(new Date());
     const [selectedImage, setSelectedImage] = useState(null);
-    const [selectedModality, setSelectedModality] = useState('');
+    const [selectedModality, setSelectedModality] = useState();
     const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
     const [selectedLocation, setSelectedLocation] = useState('');
     const [numberOfPeople, setNumberOfPeople] = useState('');
@@ -154,21 +154,21 @@ export default function CreateEvent() {
 
                         <View style={styles.eventModality}>
                             <Text style={styles.eventModalityLabel}>Modality</Text>
-                            <DropDownPicker
-                                items={[
-                                    { label: 'Soccer', value: 'soccer' },
-                                    { label: 'Basketball', value: 'basket' },
-                                    { label: 'Volleyball', value: 'voley' },
-                                    { label: 'Running', value: 'running' },
-                                    { label: 'Tennis', value: 'tennis' },
-                                    { label: 'Swimming', value: 'swimming' },
-                                    { label: 'Others', value: 'others' },
-                                ]}
-                                defaultValue={selectedModality}
-                                style={styles.eventModalityPicker}
-                                dropDownStyle={{ backgroundColor: '#fafafa' }}
-                                onChangeItem={item => handleSelectModality(item.value)}
-                            />
+                            <Picker
+                                selectedValue={selectedModality}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setSelectedModality(itemValue)}>
+                                <Picker.Item label="Select a modality" value="" />
+                                <Picker.Item label="Running" value="Running" />
+                                <Picker.Item label="Cycling" value="Cycling" />
+                                <Picker.Item label="Swimming" value="Swimming" />
+                                <Picker.Item label="Walking" value="Walking" />
+                                <Picker.Item label="Soccer" value="Soccer" />
+                                <Picker.Item label="Basketball" value="Basketball" />
+                                <Picker.Item label="Volleyball" value="Volleyball" />
+                                <Picker.Item label="Tennis" value="Tennis" />
+                                <Picker.Item label="Others" value="Others" />
+                            </Picker>
                         </View>
 
                         <View style={styles.eventLocation}>

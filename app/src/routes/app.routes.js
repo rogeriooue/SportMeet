@@ -1,19 +1,22 @@
-import React from "react";
+import React from 'react';
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import CustomDrawer from "../components/Header/CustomDrawer";
+import CustomDrawer from '../components/Header/CustomDrawer';
 
-import Home from "../pages/Home";
-import Profile from "../pages/Profile";
-import CreateEvent from "../pages/CreateEvent";
+import Home from '../pages/Home';
+import Profile from '../pages/Profile';
+import CreateEvent from '../pages/CreateEvent';
+
 
 const AppDrawer = createDrawerNavigator();
 
-function AppRoutes({title}) {
+
+function AppRoutes({ title }) {
+
     return (
         <AppDrawer.Navigator
             drawerContent={(props) => <CustomDrawer {...props} />}
             screenOptions={{
-                headerTitle: {title},
+                headerTitle: { title },
                 headerStyle: {
                     backgroundColor: '#3B3DBF',
                     borderBottomWidth: 1,
@@ -32,19 +35,20 @@ function AppRoutes({title}) {
                 drawerInactiveTintColor: '#121212'
             }}>
             <AppDrawer.Screen
-                name="Menu Inicial"
+                name="Menu"
                 component={Home}
             />
             <AppDrawer.Screen
-                name="Perfil"
+                name="Profile"
                 component={Profile}
             />
             <AppDrawer.Screen
-                name="Criar Evento"
+                name="Create Event"
                 component={CreateEvent}
             />
         </AppDrawer.Navigator>
     )
 }
+
 
 export default AppRoutes;
