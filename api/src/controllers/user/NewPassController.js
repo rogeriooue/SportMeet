@@ -118,9 +118,9 @@ class NewPassController {
             mailer.sendMail({
                 to: email,
                 from: process.env.EMAIL_FROM,
-                subject: "Reset Password Confirmation - SportMeet",
+                subject: "Reset Password - SportMeet",
                 html: `
-                    <h1>Reset Password confirmation</h1>
+                    <h1>Reset Password</h1>
                     <p>Hello, ${user.name}!</p>
                     <p>Your password has been reset. If this was you, you can safely disregard this email.</p>
                     <p>For any questions or concerns, feel free to contact our support team.</p>
