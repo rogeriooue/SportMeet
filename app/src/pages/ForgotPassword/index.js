@@ -68,10 +68,10 @@ export default function ForgotPassword() {
                 })
             });
 
+            const { message } = await response.json();
+
             if (response.ok) {
                 setLoading(false);
-
-                const { message } = await response.json();
 
                 console.log(message);
 
@@ -79,7 +79,7 @@ export default function ForgotPassword() {
 
             } else {
                 setLoading(false);
-                throw new Error(`Forgot Password Failed: Status: ${response.status}, Message: ${response.statusText}`);
+                throw new Error(`Status: ${response.status}, Message: ${message}`);
             }
 
         } catch (error) {

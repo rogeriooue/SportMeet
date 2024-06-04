@@ -79,10 +79,10 @@ export default function SignIn() {
 
                 console.log(message);
 
-
             } else {
                 setLoading(false);
-                throw new Error(`User Sign In Failed: ${response.status}, ${response.statusText}`);
+                const { message } = await response.json();
+                throw new Error(`${response.status}, ${message}`);
             }
 
         } catch (error) {

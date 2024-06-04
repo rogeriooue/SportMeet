@@ -102,7 +102,8 @@ export default function SignUp() {
 
             } else {
                 setLoading(false);
-                throw new Error(`User Sign Up Failed: ${response.status}, ${response.statusText}`);
+                const { message } = await response.json();
+                throw new Error(`${response.status}, ${message}`);
             }
 
         } catch (error) {
