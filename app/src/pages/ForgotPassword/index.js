@@ -1,5 +1,5 @@
-import React from 'react';
-import Axios from 'axios';
+import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import {
     BASE_URL,
@@ -7,10 +7,6 @@ import {
     ENDPOINT_FORGOT_PASSWORD,
     ENDPOINT_NEW_PASSWORD
 } from '@env';
-
-import { useNavigation } from '@react-navigation/native';
-
-import { useState } from 'react';
 
 import {
     ActivityIndicator,
@@ -62,29 +58,34 @@ export default function ForgotPassword() {
         setLoading(true);
 
         try {
-            const response = await Axios.post(urlForgotPass, {
-                email: email
+            const response = await fetch(urlForgotPass, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email
+                })
             });
 
-            if (response.status === 200) {
+            if (response.ok) {
                 setLoading(false);
 
-                const { message } = response.data;
+                const { message } = await response.json();
 
                 console.log(message);
 
-                alert(`Status: ${response.status}, Message: ${response.data.message}`);
+                alert(`Status: ${response.status}, Message: ${message}`);
 
             } else {
                 setLoading(false);
-                throw new Error(`Forgot Password Failed: Status: ${response.status}, Message: ${response.data.message}`);
+                throw new Error(`Forgot Password Failed: Status: ${response.status}, Message: ${response.statusText}`);
             }
 
         } catch (error) {
             setLoading(false);
-            if (error.response) {
-                alert(`Status: ${error.response.status}, Message: ${error.response.data.message}`);
-                console.error(error);
+            if (error instanceof TypeError || error instanceof SyntaxError) {
+                alert(`Forgot Password Failed. Please check your network connection and try again. ${error}`);
             } else {
                 alert(`Forgot Password Failed. Please try again. ${error}`);
             }
@@ -97,19 +98,25 @@ export default function ForgotPassword() {
         setLoading(true);
 
         try {
-            const response = await Axios.put(urlNewPass, {
-                email: email,
-                recoveryCode: recoveryCode,
-                newPassword: newPassword,
-                confirmNewPassword: confirmNewPassword
+            const response = await fetch(urlNewPass, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    recoveryCode: recoveryCode,
+                    newPassword: newPassword,
+                    confirmNewPassword: confirmNewPassword
+                })
             });
 
-            if (response.status === 200) {
+            if (response.ok) {
                 setLoading(false);
 
-                const { message } = response.data;
+                const { message } = await response.json();
 
-                alert(`Status: ${response.status}, Message: ${response.data.message}`);
+                alert(`Status: ${response.status}, Message: ${message}`);
 
                 console.log(message);
 
@@ -117,14 +124,13 @@ export default function ForgotPassword() {
 
             } else {
                 setLoading(false);
-                throw new Error(`Update Password Failed: Status: ${response.status}, Message: ${response.data.message}`);
+                throw new Error(`Update Password Failed: Status: ${response.status}, Message: ${response.statusText}`);
             }
 
         } catch (error) {
             setLoading(false);
-            if (error.response) {
-                alert(`Status: ${error.response.status}, Message: ${error.response.data.message}`);
-                console.error(error);
+            if (error instanceof TypeError || error instanceof SyntaxError) {
+                alert(`Update Password Failed. Please check your network connection and try again. ${error}`);
             } else {
                 alert(`Update Password Failed. Please try again. ${error}`);
             }

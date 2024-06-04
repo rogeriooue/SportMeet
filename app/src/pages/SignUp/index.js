@@ -1,6 +1,6 @@
 import React from 'react';
-import Axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from "../../contexts/auth";
 
 import {
     BASE_URL,
@@ -29,8 +29,6 @@ import {
     SubmitButton,
     SubmitText
 } from '../SignIn/styles';
-
-import { AuthContext } from "../../contexts/auth";
 
 
 export default function SignUp() {
@@ -71,20 +69,26 @@ export default function SignUp() {
         setLoading(true);
 
         try {
-            const response = await Axios.post(urlSignUp, {
-                name: name,
-                surname: surname,
-                email: email,
-                password: password,
-                confirmPassword: confirmPassword
+            const response = await fetch(urlSignUp, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    surname: surname,
+                    email: email,
+                    password: password,
+                    confirmPassword: confirmPassword
+                })
             });
 
-            if (response.status === 201) {
+            if (response.ok) {
                 setLoading(false);
 
-                const { user, message } = response.data;
+                const { user, message } = await response.json();
 
-                alert(`Status: ${response.status}, Message: ${response.data.message}`);
+                alert(`Status: ${response.status}, Message: ${message}`);
 
                 setName('');
                 setSurname('');
@@ -98,14 +102,13 @@ export default function SignUp() {
 
             } else {
                 setLoading(false);
-                throw new Error(`User Sign Up Failed: ${response.status}, ${response.data.message}`);
+                throw new Error(`User Sign Up Failed: ${response.status}, ${response.statusText}`);
             }
 
         } catch (error) {
             setLoading(false);
-            if (error.response) {
-                alert(`Status: ${error.response.status}, Message: ${error.response.data.message}`);
-                console.error(error);
+            if (error instanceof TypeError || error instanceof SyntaxError) {
+                alert(`Failed to Sign Up. Please check your network connection and try again. ${error}`);
             } else {
                 alert(`Failed to Sign Up. Please try again. ${error}`);
             }

@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import Axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../contexts/auth';
 
@@ -54,17 +53,23 @@ export default function SignIn() {
         setLoading(true);
 
         try {
-            const response = await Axios.post(urlSignIn, {
-                email: email,
-                password: password
+            const response = await fetch(urlSignIn, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
             });
 
-            if (response.status === 200) {
+            if (response.ok) {
                 setLoading(false);
 
-                const { user, token, message } = response.data;
+                const { user, token, message } = await response.json();
 
-                alert(`Status: ${response.status}, Message: ${response.data.message}`);
+                alert(`Status: ${response.status}, Message: ${message}`);
 
                 setEmail('');
                 setPassword('');
@@ -77,19 +82,17 @@ export default function SignIn() {
 
             } else {
                 setLoading(false);
-                throw new Error(`User Sign In Failed: ${response.status}, ${response.data.message}`);
+                throw new Error(`User Sign In Failed: ${response.status}, ${response.statusText}`);
             }
 
         } catch (error) {
             setLoading(false);
-            if (error.response) {
-                alert(`Status: ${error.response.status}, Message: ${error.response.data.message}`);
-                console.error(error);
+            if (error instanceof TypeError || error instanceof SyntaxError) {
+                alert(`Failed to Sign In. Please check your network connection and try again. ${error}`);
             } else {
                 alert(`Failed to Sign In. Please try again. ${error}`);
             }
             console.error(error);
-
         }
     };
 
