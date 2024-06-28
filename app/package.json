@@ -10,7 +10,7 @@
   },
   "author": "SportMeet Team, Equipe7",
   "dependencies": {
-    "@expo/vector-icons": "^14.0.1",
+    "@expo/vector-icons": "^14.0.2",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/datetimepicker": "8.0.1",
     "@react-native-picker/picker": "^2.7.5",
@@ -18,7 +18,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@react-navigation/stack": "^6.3.29",
-    "expo": "^51.0.14",
+    "expo": "^51.0.16",
     "expo-status-bar": "^1.12.1",
     "install": "^0.13.0",
     "metro": "^0.80.9",
