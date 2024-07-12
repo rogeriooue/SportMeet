@@ -15,6 +15,7 @@ import {
     Keyboard
 } from 'react-native';
 
+
 import {
     Background,
     Container,
@@ -24,7 +25,7 @@ import {
     SubmitButton,
     SubmitText,
     Link,
-    Linktext
+    LinkText
 } from './styles';
 
 
@@ -127,7 +128,7 @@ export default function SignIn() {
                     </AreaInput>
 
                     <Link onPress={() => navigation.navigate('Forgot Password')}>
-                        <Linktext>Forgot my Password</Linktext>
+                        <LinkText>Forgot my Password</LinkText>
                     </Link>
 
                     {loading && <ActivityIndicator size="large" color="#0000ff" />}
@@ -137,7 +138,7 @@ export default function SignIn() {
                     </SubmitButton>
 
                     <Link onPress={() => navigation.navigate('Sign Up')}>
-                        <Linktext>Create your Account</Linktext>
+                        <LinkText>Create your Account</LinkText>
                     </Link>
 
                 </Container>

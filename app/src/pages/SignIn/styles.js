@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 
 export const Background = styled.View`
-    flex: 1;
+    flex:1;
     background-color: #F0F4FF;
 `;
 
@@ -51,6 +51,6 @@ export const Link = styled.TouchableOpacity`
     margin-bottom: 10px;
 `;
 
-export const Linktext = styled.Text`
+export const LinkText = styled.Text`
     color: #171717;
 `;

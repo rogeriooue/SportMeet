@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import * as ImagePicker from 'expo-image-picker';
 
 import {
     View,
@@ -14,11 +15,13 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 
-import styles from '../CreateEvent/styles';
-
 import {
     Background,
     Container,
+    AreaInput,
+    Input,
+    SubmitButton,
+    SubmitText
 } from '../SignIn/styles';
 
 
@@ -27,11 +30,24 @@ export default function CreateEvent() {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState(new Date());
     const [selectedImage, setSelectedImage] = useState(null);
-    const [selectedModality, setSelectedModality] = useState();
     const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
     const [selectedLocation, setSelectedLocation] = useState('');
     const [numberOfPeople, setNumberOfPeople] = useState('');
     const [eventDescription, setEventDescription] = useState('');
+
+    const [modalities] = useState([
+        'Running',
+        'Cycling',
+        'Swimming',
+        'Walking',
+        'Soccer',
+        'Basketball',
+        'Volleyball',
+        'Tennis',
+        'Others'
+    ]);
+
+    const [selectedModality, setSelectedModality] = useState([]);
 
 
     const handleEventNameChange = (text) => {
@@ -63,10 +79,6 @@ export default function CreateEvent() {
         }
     };
 
-    const handleSelectModality = (selectedModality) => {
-        setSelectedModality(selectedModality);
-    };
-
     const handleOpenLocationModal = () => {
         setIsLocationModalOpen(true);
     };
@@ -80,8 +92,8 @@ export default function CreateEvent() {
         setIsLocationModalOpen(false);
     };
 
-    const handlePeopleChange = (newNumberOfPeople) => {
-        setNumberOfPeople(newNumberOfPeople);
+    const handlePeopleChange = (number) => {
+        setNumberOfPeople(number);
     };
 
     const handleDescriptionChange = (text) => {
@@ -89,15 +101,14 @@ export default function CreateEvent() {
     };
 
     const handleCreateEvent = () => {
-        console.log('Criando evento...');
+        console.log('Creating event...');
     };
 
     const handleCancelEvent = () => {
-        // Implement logic to handle event cancellation
-        console.log('Cancelando evento...');
+        console.log('Cancelling event...');
         setEventName('');
         setSelectedDate(new Date());
-        setSelectedTime('00:00');
+        setSelectedTime(new Date());
         setSelectedImage(null);
         setSelectedModality('');
         setIsLocationModalOpen(false);
@@ -107,113 +118,89 @@ export default function CreateEvent() {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <Background>
                     <Container
                         behavior={Platform.OS === 'ios' ? 'padding' : ''}
                         enabled
                     >
-                        <TouchableOpacity
-                            style={styles.eventPhotoButton}
-                            onPress={handleSelectImage}
-                        >
-                            <Text style={styles.eventPhotoButtonText}>Picture</Text>
-                        </TouchableOpacity>
+                        <SubmitButton onPress={handleSelectImage}>
+                            <SubmitText>Picture</SubmitText>
+                        </SubmitButton>
 
-                        <View style={styles.eventDetails}>
-                            <Text style={styles.eventNameLabel}>Event Name</Text>
-                            <TextInput
-                                style={styles.eventNameInput}
+                        <AreaInput>
+                            <Input
+                                placeholder="Event Name"
                                 value={eventName}
                                 onChangeText={handleEventNameChange}
                             />
-                        </View>
+                        </AreaInput>
 
-                        <View>
-                            <Text style={styles.eventDateLabel}>Date</Text>
+                        <AreaInput>
                             <DateTimePicker
                                 value={selectedDate}
                                 mode={'date'}
                                 display='calendar'
                                 onChange={(event, selectedDate) => {
-                                    setSelectedDate(selectedDate || selectedDate);
+                                    setSelectedDate(selectedDate);
                                 }}
                             />
+                        </AreaInput>
 
-                            <Text style={styles.eventTimeLabel}>Time</Text>
+                        <AreaInput>
                             <DateTimePicker
                                 value={selectedTime}
                                 mode={'time'}
                                 display='inline'
                                 onChange={(event, selectedTime) => {
-                                    setSelectedTime(selectedTime || selectedTime);
+                                    setSelectedTime(selectedTime);
                                 }}
                             />
-                        </View>
+                        </AreaInput>
 
-                        <View style={styles.eventModality}>
-                            <Text style={styles.eventModalityLabel}>Modality</Text>
+                        <AreaInput>
                             <Picker
                                 selectedValue={selectedModality}
-                                onValueChange={(itemValue, itemIndex) =>
-                                    setSelectedModality(itemValue)}>
-                                <Picker.Item label="Select a modality" value="" />
-                                <Picker.Item label="Running" value="Running" />
-                                <Picker.Item label="Cycling" value="Cycling" />
-                                <Picker.Item label="Swimming" value="Swimming" />
-                                <Picker.Item label="Walking" value="Walking" />
-                                <Picker.Item label="Soccer" value="Soccer" />
-                                <Picker.Item label="Basketball" value="Basketball" />
-                                <Picker.Item label="Volleyball" value="Volleyball" />
-                                <Picker.Item label="Tennis" value="Tennis" />
-                                <Picker.Item label="Others" value="Others" />
-                            </Picker>
-                        </View>
-
-                        <View style={styles.eventLocation}>
-                            <TouchableOpacity
-                                style={styles.eventLocationButton}
-                                onPress={handleOpenLocationModal}
+                                onValueChange={(itemValue, itemIndex) => setSelectedModality(itemValue)}
                             >
-                                <Text style={styles.eventLocationButtonText}>Location</Text>
-                            </TouchableOpacity>
-                        </View>
+                                {modalities.map((md, index) => {
+                                    <Picker.Item key={index} label={md} value={md} />
+                                })}
+                            </Picker>
+                        </AreaInput>
 
-                        <View style={styles.eventPeople}>
-                            <TextInput
-                                style={styles.eventPeopleInput}
+
+                        <SubmitButton onPress={handleOpenLocationModal}>
+                            <SubmitText>Location</SubmitText>
+                        </SubmitButton>
+
+                        <AreaInput>
+                            <Input
                                 value={numberOfPeople}
                                 onChangeText={handlePeopleChange}
                                 keyboardType="numeric"
-                                placeholder="Participants"
+                                placeholder="Number of People"
                             />
-                        </View>
+                        </AreaInput>
 
-                        <View style={styles.eventDescription}>
-                            <TextInput
-                                style={styles.eventDescriptionInput}
+                        <AreaInput>
+                            <Input
                                 value={eventDescription}
                                 onChangeText={handleDescriptionChange}
-                                placeholder="Description"
+                                placeholder="Event Description"
                             />
-                        </View>
+                        </AreaInput>
 
-                        <View style={styles.eventButtons}>
-                            <TouchableOpacity
-                                style={styles.createEventButton}
-                                onPress={handleCreateEvent}
-                            >
-                                <Text style={styles.createEventButtonText}>Create</Text>
-                            </TouchableOpacity>
+                        <SubmitButton onPress={handleCreateEvent}>
+                            <SubmitText>Create</SubmitText>
+                        </SubmitButton>
 
-                            <TouchableOpacity
-                                style={styles.cancelEventButton}
-                                onPress={handleCancelEvent}
-                            >
-                                <Text style={styles.cancelEventButtonText}>Cancel</Text>
-                            </TouchableOpacity>
-                        </View>
+
+                        <SubmitButton onPress={handleCancelEvent}>
+                            <SubmitText>Cancel</SubmitText>
+                        </SubmitButton>
+
                     </Container>
                 </Background>
             </TouchableWithoutFeedback>
