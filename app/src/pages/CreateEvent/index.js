@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-picker/picker';
+import RNPickerSelect from 'react-native-picker-select';
 
 import {
     Background,
@@ -23,6 +23,14 @@ import {
     SubmitButton,
     SubmitText
 } from '../SignIn/styles';
+
+import {
+    DateTimeArea,
+    SelectionArea,
+    DescriptionInput,
+    CancelButton,
+    CancelText
+} from './styles';
 
 
 export default function CreateEvent() {
@@ -34,32 +42,18 @@ export default function CreateEvent() {
     const [selectedLocation, setSelectedLocation] = useState('');
     const [numberOfPeople, setNumberOfPeople] = useState('');
     const [eventDescription, setEventDescription] = useState('');
+    const [selectedModality, setSelectedModality] = useState('');
 
-    const [modalities] = useState([
-        'Running',
-        'Cycling',
-        'Swimming',
-        'Walking',
-        'Soccer',
-        'Basketball',
-        'Volleyball',
-        'Tennis',
-        'Others'
-    ]);
-
-    const [selectedModality, setSelectedModality] = useState([]);
-
-
-    const handleEventNameChange = (text) => {
-        setEventName(text);
+    const handleEventNameChange = (eventName) => {
+        setEventName(eventName);
     };
 
-    const handleDateChange = (newDate) => {
-        setSelectedDate(newDate);
+    const handleDateChange = (selectedDate) => {
+        setSelectedDate(selectedDate);
     };
 
-    const handleTimeChange = (newTime) => {
-        setSelectedTime(newTime);
+    const handleTimeChange = (selectedTime) => {
+        setSelectedTime(selectedTime);
     };
 
     const handleSelectImage = async () => {
@@ -70,7 +64,7 @@ export default function CreateEvent() {
                 aspect: [4, 3],
             });
 
-            if (!result.cancelled) {
+            if (!result.canceled) {
                 const { uri } = result;
                 setSelectedImage(uri);
             }
@@ -87,17 +81,16 @@ export default function CreateEvent() {
         setSelectedLocation(selectedLocation);
     };
 
-
     const handleSaveLocation = () => {
         setIsLocationModalOpen(false);
     };
 
-    const handlePeopleChange = (number) => {
-        setNumberOfPeople(number);
+    const handlePeopleChange = (numberOfPeople) => {
+        setNumberOfPeople(numberOfPeople);
     };
 
-    const handleDescriptionChange = (text) => {
-        setEventDescription(text);
+    const handleDescriptionChange = (eventDescription) => {
+        setEventDescription(eventDescription);
     };
 
     const handleCreateEvent = () => {
@@ -137,7 +130,7 @@ export default function CreateEvent() {
                             />
                         </AreaInput>
 
-                        <AreaInput>
+                        <DateTimeArea>
                             <DateTimePicker
                                 value={selectedDate}
                                 mode={'date'}
@@ -146,9 +139,7 @@ export default function CreateEvent() {
                                     setSelectedDate(selectedDate);
                                 }}
                             />
-                        </AreaInput>
 
-                        <AreaInput>
                             <DateTimePicker
                                 value={selectedTime}
                                 mode={'time'}
@@ -157,18 +148,30 @@ export default function CreateEvent() {
                                     setSelectedTime(selectedTime);
                                 }}
                             />
-                        </AreaInput>
+                        </DateTimeArea>
 
-                        <AreaInput>
-                            <Picker
-                                selectedValue={selectedModality}
-                                onValueChange={(itemValue, itemIndex) => setSelectedModality(itemValue)}
-                            >
-                                {modalities.map((md, index) => {
-                                    <Picker.Item key={index} label={md} value={md} />
-                                })}
-                            </Picker>
-                        </AreaInput>
+
+                        <SelectionArea>
+                            <RNPickerSelect
+                                onValueChange={(value) => setSelectedModality(value)}
+                                value={selectedModality}
+                                placeholder={{
+                                    label: 'Select a modality'
+                                }}
+                                items={[
+                                    { label: 'Soccer', value: 'soccer' },
+                                    { label: 'Basketball', value: 'basketball' },
+                                    { label: 'Volleyball', value: 'volleyball' },
+                                    { label: 'Running', value: 'running' },
+                                    { label: 'Tennis', value: 'tennis' },
+                                    { label: 'Cycling', value: 'cycling' },
+                                    { label: 'Swimming', value: 'swimming' },
+                                    { label: 'Walking', value: 'walking' },
+                                    { label: 'E-Sports', value: 'e-sports' },
+                                    { label: 'Others', value: 'others' },
+                                ]}
+                            />
+                        </SelectionArea>
 
 
                         <SubmitButton onPress={handleOpenLocationModal}>
@@ -185,7 +188,7 @@ export default function CreateEvent() {
                         </AreaInput>
 
                         <AreaInput>
-                            <Input
+                            <DescriptionInput
                                 value={eventDescription}
                                 onChangeText={handleDescriptionChange}
                                 placeholder="Event Description"
@@ -196,10 +199,9 @@ export default function CreateEvent() {
                             <SubmitText>Create</SubmitText>
                         </SubmitButton>
 
-
-                        <SubmitButton onPress={handleCancelEvent}>
-                            <SubmitText>Cancel</SubmitText>
-                        </SubmitButton>
+                        <CancelButton onPress={handleCancelEvent}>
+                            <CancelText>Cancel</CancelText>
+                        </CancelButton>
 
                     </Container>
                 </Background>
