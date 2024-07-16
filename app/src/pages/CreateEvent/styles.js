@@ -13,12 +13,12 @@ export const DateTimeArea = styled.View`
     margin-bottom: 15px;
 `;
 
-export const SelectionArea = styled.Text`  
+export const SelectionArea = styled.View`  
     width: 90%;
-    font-size: 17px;
     padding: 10px;
     border-radius: 8px;
     margin-bottom: 15px;
+    background-color: #FFF;
 `;
 
 export const DescriptionInput = styled.TextInput`

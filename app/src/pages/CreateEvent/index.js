@@ -170,6 +170,16 @@ export default function CreateEvent() {
                                     { label: 'E-Sports', value: 'e-sports' },
                                     { label: 'Others', value: 'others' },
                                 ]}
+                                style={{
+                                    inputIOS: {
+                                        fontSize: 17,
+                                        color: '#121212'
+                                    },
+                                    inputAndroid: {
+                                        fontSize: 17,
+                                        color: '#121212'
+                                    },
+                                }}
                             />
                         </SelectionArea>
 
