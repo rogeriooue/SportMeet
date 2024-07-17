@@ -84,7 +84,6 @@ export default function SignUp() {
             });
 
             if (response.ok) {
-                setLoading(false);
 
                 const { user, message } = await response.json();
 
@@ -101,19 +100,19 @@ export default function SignUp() {
                 navigation.navigate('Sign In');
 
             } else {
-                setLoading(false);
                 const { message } = await response.json();
                 throw new Error(`${response.status}, ${message}`);
             }
 
         } catch (error) {
-            setLoading(false);
             if (error instanceof TypeError || error instanceof SyntaxError) {
                 alert(`Failed to Sign Up. Please check your network connection and try again. ${error}`);
             } else {
                 alert(`Failed to Sign Up. Please try again. ${error}`);
             }
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 

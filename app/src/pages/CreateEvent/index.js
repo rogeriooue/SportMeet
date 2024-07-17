@@ -54,12 +54,20 @@ export default function CreateEvent() {
         setEventName(eventName);
     };
 
-    const handleDateChange = (selectedDate) => {
-        setSelectedDate(selectedDate);
+    const handleStartDateChange = (event, selectedStartDate) => {
+        setSelectedStartDate(selectedStartDate);
     };
 
-    const handleTimeChange = (selectedTime) => {
-        setSelectedTime(selectedTime);
+    const handleStartTimeChange = (event, selectedStartTime) => {
+        setSelectedStartTime(selectedStartTime);
+    };
+
+    const handleEndDateChange = (event, selectedEndDate) => {
+        setSelectedEndDate(selectedEndDate);
+    };
+
+    const handleEndTimeChange = (event, selectedEndTime) => {
+        setSelectedEndTime(selectedEndTime);
     };
 
     const handleSelectImage = async () => {
@@ -83,13 +91,12 @@ export default function CreateEvent() {
             });
 
             if (!result.canceled) {
-                setLoading(false);
                 setSelectedImage(result.assets[0].uri);
-                console.log(result.uri);
             }
         } catch (error) {
-            setLoading(false);
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -125,7 +132,6 @@ export default function CreateEvent() {
         setSelectedStartTime(new Date());
         setSelectedEndDate(new Date());
         setSelectedEndTime(new Date());
-        setSelectedImage(null);
         setSelectedModality('');
         setIsLocationModalOpen(false);
         setSelectedLocation('');
@@ -178,18 +184,14 @@ export default function CreateEvent() {
                                 value={selectedStartDate}
                                 mode={'date'}
                                 display='calendar'
-                                onChange={(event, selectedStartDate) => {
-                                    setSelectedStartDate(selectedStartDate);
-                                }}
+                                onChange={handleStartDateChange}
                             />
 
                             <DateTimePicker
                                 value={selectedStartTime}
                                 mode={'time'}
                                 display='inline'
-                                onChange={(event, selectedStartTime) => {
-                                    setSelectedStartTime(selectedStartTime);
-                                }}
+                                onChange={handleStartTimeChange}
                             />
                         </DateTimeArea>
 
@@ -200,18 +202,14 @@ export default function CreateEvent() {
                                 value={selectedEndDate}
                                 mode={'date'}
                                 display='calendar'
-                                onChange={(event, selectedEndDate) => {
-                                    setSelectedEndDate(selectedEndDate);
-                                }}
+                                onChange={handleEndDateChange}
                             />
 
                             <DateTimePicker
                                 value={selectedEndTime}
                                 mode={'time'}
                                 display='inline'
-                                onChange={(event, selectedEndTime) => {
-                                    setSelectedEndTime(selectedEndTime);
-                                }}
+                                onChange={handleEndTimeChange}
                             />
                         </DateTimeArea>
 
@@ -247,7 +245,6 @@ export default function CreateEvent() {
                             />
                         </SelectionArea>
 
-
                         <SubmitButton onPress={handleOpenLocationModal}>
                             <SubmitText>Location</SubmitText>
                         </SubmitButton>
@@ -258,6 +255,8 @@ export default function CreateEvent() {
                                 onChangeText={handlePeopleChange}
                                 keyboardType="numeric"
                                 placeholder="Number of People"
+                                maxLength={5}
+                                accessible={true}
                             />
                         </AreaInput>
 

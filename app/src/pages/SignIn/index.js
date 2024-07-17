@@ -66,8 +66,6 @@ export default function SignIn() {
             });
 
             if (response.ok) {
-                setLoading(false);
-
                 const { user, token, message } = await response.json();
 
                 alert(`Status: ${response.status}, Message: ${message}`);
@@ -81,19 +79,19 @@ export default function SignIn() {
                 console.log(message);
 
             } else {
-                setLoading(false);
                 const { message } = await response.json();
                 throw new Error(`${response.status}, ${message}`);
             }
 
         } catch (error) {
-            setLoading(false);
             if (error instanceof TypeError || error instanceof SyntaxError) {
                 alert(`Failed to Sign In. Please check your network connection and try again. ${error}`);
             } else {
                 alert(`Failed to Sign In. Please try again. ${error}`);
             }
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 

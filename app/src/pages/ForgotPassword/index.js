@@ -71,25 +71,24 @@ export default function ForgotPassword() {
             const { message } = await response.json();
 
             if (response.ok) {
-                setLoading(false);
 
                 console.log(message);
 
                 alert(`Status: ${response.status}, Message: ${message}`);
 
             } else {
-                setLoading(false);
                 throw new Error(`Status: ${response.status}, Message: ${message}`);
             }
 
         } catch (error) {
-            setLoading(false);
             if (error instanceof TypeError || error instanceof SyntaxError) {
                 alert(`Forgot Password Failed. Please check your network connection and try again. ${error}`);
             } else {
                 alert(`Forgot Password Failed. Please try again. ${error}`);
             }
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
