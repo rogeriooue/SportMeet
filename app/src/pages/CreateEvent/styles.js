@@ -7,7 +7,6 @@ export const DateTimeArea = styled.View`
     justify-content: center;
     width: 90%;
     font-size: 17px;
-    padding: 10px;
     border-radius: 8px;
     color: #121212;
     margin-bottom: 15px;

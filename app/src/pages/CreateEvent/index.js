@@ -1,8 +1,12 @@
 import React, { useState, useContext } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import RNPickerSelect from 'react-native-picker-select';
 
 import {
     View,
+    Image,
+    ActivityIndicator,
     Text,
     TouchableOpacity,
     TextInput,
@@ -12,14 +16,13 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native';
 
-import DateTimePicker from '@react-native-community/datetimepicker';
-import RNPickerSelect from 'react-native-picker-select';
-
 import {
     Background,
     Container,
     AreaInput,
     Input,
+    Link,
+    LinkText,
     SubmitButton,
     SubmitText
 } from '../SignIn/styles';
@@ -34,10 +37,11 @@ import {
 
 
 export default function CreateEvent() {
+    const [loading, setLoading] = useState(false);
     const [eventName, setEventName] = useState('');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState(new Date());
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImage, setSelectedImage] = useState('');
     const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
     const [selectedLocation, setSelectedLocation] = useState('');
     const [numberOfPeople, setNumberOfPeople] = useState('');
@@ -57,18 +61,33 @@ export default function CreateEvent() {
     };
 
     const handleSelectImage = async () => {
+
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (status !== 'granted') {
+            alert('Sorry, we need media library permissions to make this work!');
+            return;
+        }
+
         try {
+            setLoading(true);
+
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
-                aspect: [4, 3],
+                aspect: [1, 1],
+                quality: 1,
+                base64: true,
             });
 
+
             if (!result.canceled) {
-                const { uri } = result;
-                setSelectedImage(uri);
+                setLoading(false);
+                setSelectedImage(result.assets[0].uri);
+                console.log(result.uri);
             }
         } catch (error) {
+            setLoading(false);
             console.error(error);
         }
     };
@@ -118,9 +137,27 @@ export default function CreateEvent() {
                         behavior={Platform.OS === 'ios' ? 'padding' : ''}
                         enabled
                     >
+
                         <SubmitButton onPress={handleSelectImage}>
-                            <SubmitText>Picture</SubmitText>
+                            <SubmitText>Select Image</SubmitText>
                         </SubmitButton>
+
+                        <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+
+                            {loading && <ActivityIndicator size='large' color='#0000ff' />}
+
+                            {selectedImage && (
+                                <View style={{ borderRadius: 8, marginBottom: 15, alignItems: 'center', justifyContent: 'center' }}>
+                                    <Image
+                                        source={{ uri: selectedImage }}
+                                        style={{ width: '90%', aspectRatio: 1, resizeMode: 'cover', borderRadius: 8, backgroundColor: '#FFF' }}
+                                    />
+                                    <Link onPress={() => setSelectedImage('')}>
+                                        <LinkText>Reset Image</LinkText>
+                                    </Link>
+                                </View>
+                            )}
+                        </View>
 
                         <AreaInput>
                             <Input
@@ -131,6 +168,30 @@ export default function CreateEvent() {
                         </AreaInput>
 
                         <DateTimeArea>
+                            <LinkText>Start</LinkText>
+
+                            <DateTimePicker
+                                value={selectedDate}
+                                mode={'date'}
+                                display='calendar'
+                                onChange={(event, selectedDate) => {
+                                    setSelectedDate(selectedDate);
+                                }}
+                            />
+
+                            <DateTimePicker
+                                value={selectedTime}
+                                mode={'time'}
+                                display='inline'
+                                onChange={(event, selectedTime) => {
+                                    setSelectedTime(selectedTime);
+                                }}
+                            />
+                        </DateTimeArea>
+
+                        <DateTimeArea>
+                            <LinkText>End  </LinkText>
+
                             <DateTimePicker
                                 value={selectedDate}
                                 mode={'date'}
