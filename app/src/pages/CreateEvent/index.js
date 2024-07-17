@@ -39,8 +39,10 @@ import {
 export default function CreateEvent() {
     const [loading, setLoading] = useState(false);
     const [eventName, setEventName] = useState('');
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    const [selectedTime, setSelectedTime] = useState(new Date());
+    const [selectedStartDate, setSelectedStartDate] = useState(new Date());
+    const [selectedStartTime, setSelectedStartTime] = useState(new Date());
+    const [selectedEndDate, setSelectedEndDate] = useState(new Date());
+    const [selectedEndTime, setSelectedEndTime] = useState(new Date());
     const [selectedImage, setSelectedImage] = useState('');
     const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
     const [selectedLocation, setSelectedLocation] = useState('');
@@ -80,7 +82,6 @@ export default function CreateEvent() {
                 base64: true,
             });
 
-
             if (!result.canceled) {
                 setLoading(false);
                 setSelectedImage(result.assets[0].uri);
@@ -118,9 +119,12 @@ export default function CreateEvent() {
 
     const handleCancelEvent = () => {
         console.log('Cancelling event...');
+        setSelectedImage('');
         setEventName('');
-        setSelectedDate(new Date());
-        setSelectedTime(new Date());
+        setSelectedStartDate(new Date());
+        setSelectedStartTime(new Date());
+        setSelectedEndDate(new Date());
+        setSelectedEndTime(new Date());
         setSelectedImage(null);
         setSelectedModality('');
         setIsLocationModalOpen(false);
@@ -171,20 +175,20 @@ export default function CreateEvent() {
                             <LinkText>Start</LinkText>
 
                             <DateTimePicker
-                                value={selectedDate}
+                                value={selectedStartDate}
                                 mode={'date'}
                                 display='calendar'
-                                onChange={(event, selectedDate) => {
-                                    setSelectedDate(selectedDate);
+                                onChange={(event, selectedStartDate) => {
+                                    setSelectedStartDate(selectedStartDate);
                                 }}
                             />
 
                             <DateTimePicker
-                                value={selectedTime}
+                                value={selectedStartTime}
                                 mode={'time'}
                                 display='inline'
-                                onChange={(event, selectedTime) => {
-                                    setSelectedTime(selectedTime);
+                                onChange={(event, selectedStartTime) => {
+                                    setSelectedStartTime(selectedStartTime);
                                 }}
                             />
                         </DateTimeArea>
@@ -193,24 +197,23 @@ export default function CreateEvent() {
                             <LinkText>End  </LinkText>
 
                             <DateTimePicker
-                                value={selectedDate}
+                                value={selectedEndDate}
                                 mode={'date'}
                                 display='calendar'
-                                onChange={(event, selectedDate) => {
-                                    setSelectedDate(selectedDate);
+                                onChange={(event, selectedEndDate) => {
+                                    setSelectedEndDate(selectedEndDate);
                                 }}
                             />
 
                             <DateTimePicker
-                                value={selectedTime}
+                                value={selectedEndTime}
                                 mode={'time'}
                                 display='inline'
-                                onChange={(event, selectedTime) => {
-                                    setSelectedTime(selectedTime);
+                                onChange={(event, selectedEndTime) => {
+                                    setSelectedEndTime(selectedEndTime);
                                 }}
                             />
                         </DateTimeArea>
-
 
                         <SelectionArea>
                             <RNPickerSelect
