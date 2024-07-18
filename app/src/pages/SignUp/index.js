@@ -84,7 +84,6 @@ export default function SignUp() {
             });
 
             if (response.ok) {
-
                 const { user, message } = await response.json();
 
                 alert(`Status: ${response.status}, Message: ${message}`);
@@ -125,7 +124,7 @@ export default function SignUp() {
                 >
                     <AreaInput>
                         <Input
-                            placeholder="Name"
+                            placeholder='Name'
                             value={name}
                             onChangeText={onChangeNameHandler}
                         />
@@ -133,7 +132,7 @@ export default function SignUp() {
 
                     <AreaInput>
                         <Input
-                            placeholder="Surname"
+                            placeholder='Surname'
                             value={surname}
                             onChangeText={onChangeSurnameHandler}
                         />
@@ -141,18 +140,18 @@ export default function SignUp() {
 
                     <AreaInput>
                         <Input
-                            placeholder="E-mail"
+                            placeholder='E-mail'
                             value={email}
-                            autoCapitalize="none"
+                            autoCapitalize='none'
                             onChangeText={onChangeEmailHandler}
                         />
                     </AreaInput>
 
                     <AreaInput>
                         <Input
-                            placeholder="Password"
+                            placeholder='Password'
                             value={password}
-                            autoCapitalize="none"
+                            autoCapitalize='none'
                             secureTextEntry={true}
                             onChangeText={onChangePasswordHandler}
                         />
@@ -160,17 +159,17 @@ export default function SignUp() {
 
                     <AreaInput>
                         <Input
-                            placeholder="Confirm Password"
+                            placeholder='Confirm Password'
                             value={confirmPassword}
-                            autoCapitalize="none"
+                            autoCapitalize='none'
                             secureTextEntry={true}
                             onChangeText={onChangeConfirmPasswordHandler}
                         />
                     </AreaInput>
 
-                    {loading && <ActivityIndicator size="large" color="#0000ff" />}
+                    {loading && <ActivityIndicator size='large' color='#0000ff' />}
 
-                    <SubmitButton onPress={onSubmitFormHandler}>
+                    <SubmitButton activeOpacity={0.8} onPress={onSubmitFormHandler}>
                         <SubmitText>Sign Up</SubmitText>
                     </SubmitButton>
 

@@ -44,8 +44,6 @@ export default function CreateEvent() {
     const [selectedEndDate, setSelectedEndDate] = useState(new Date());
     const [selectedEndTime, setSelectedEndTime] = useState(new Date());
     const [selectedImage, setSelectedImage] = useState('');
-    const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
-    const [selectedLocation, setSelectedLocation] = useState('');
     const [numberOfPeople, setNumberOfPeople] = useState('');
     const [eventDescription, setEventDescription] = useState('');
     const [selectedModality, setSelectedModality] = useState('');
@@ -100,18 +98,6 @@ export default function CreateEvent() {
         }
     };
 
-    const handleOpenLocationModal = () => {
-        setIsLocationModalOpen(true);
-    };
-
-    const handleSelectLocation = (selectedLocation) => {
-        setSelectedLocation(selectedLocation);
-    };
-
-    const handleSaveLocation = () => {
-        setIsLocationModalOpen(false);
-    };
-
     const handlePeopleChange = (numberOfPeople) => {
         setNumberOfPeople(numberOfPeople);
     };
@@ -148,7 +134,7 @@ export default function CreateEvent() {
                         enabled
                     >
 
-                        <SubmitButton onPress={handleSelectImage}>
+                        <SubmitButton activeOpacity={0.8} onPress={handleSelectImage}>
                             <SubmitText>Select Image</SubmitText>
                         </SubmitButton>
 
@@ -171,7 +157,7 @@ export default function CreateEvent() {
 
                         <AreaInput>
                             <Input
-                                placeholder="Event Name"
+                                placeholder='Event Name'
                                 value={eventName}
                                 onChangeText={handleEventNameChange}
                             />
@@ -245,7 +231,7 @@ export default function CreateEvent() {
                             />
                         </SelectionArea>
 
-                        <SubmitButton onPress={handleOpenLocationModal}>
+                        <SubmitButton activeOpacity={0.8}>
                             <SubmitText>Location</SubmitText>
                         </SubmitButton>
 
@@ -253,8 +239,8 @@ export default function CreateEvent() {
                             <Input
                                 value={numberOfPeople}
                                 onChangeText={handlePeopleChange}
-                                keyboardType="numeric"
-                                placeholder="Number of People"
+                                keyboardType='numeric'
+                                placeholder='Number of People'
                                 maxLength={5}
                                 accessible={true}
                             />
@@ -264,15 +250,15 @@ export default function CreateEvent() {
                             <DescriptionInput
                                 value={eventDescription}
                                 onChangeText={handleDescriptionChange}
-                                placeholder="Event Description"
+                                placeholder='Event Description'
                             />
                         </AreaInput>
 
-                        <SubmitButton onPress={handleCreateEvent}>
+                        <SubmitButton activeOpacity={0.8} onPress={handleCreateEvent}>
                             <SubmitText>Create</SubmitText>
                         </SubmitButton>
 
-                        <CancelButton onPress={handleCancelEvent}>
+                        <CancelButton activeOpacity={0.8} onPress={handleCancelEvent}>
                             <CancelText>Cancel</CancelText>
                         </CancelButton>
 

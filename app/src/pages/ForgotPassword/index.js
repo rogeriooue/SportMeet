@@ -113,27 +113,23 @@ export default function ForgotPassword() {
             const { message } = await response.json();
 
             if (response.ok) {
-                setLoading(false);
-
                 alert(`Status: ${response.status}, Message: ${message}`);
-
                 console.log(message);
-
                 navigation.navigate('Sign In');
 
             } else {
-                setLoading(false);
                 throw new Error(`Status: ${response.status}, Message: ${message}`);
             }
 
         } catch (error) {
-            setLoading(false);
             if (error instanceof TypeError || error instanceof SyntaxError) {
                 alert(`Update Password Failed. Please check your network connection and try again. ${error}`);
             } else {
                 alert(`Update Password Failed. Please try again. ${error}`);
             }
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -146,23 +142,23 @@ export default function ForgotPassword() {
                 >
                     <AreaInput>
                         <Input
-                            placeholder="E-mail"
-                            autoCapitalize="none"
+                            placeholder='E-mail'
+                            autoCapitalize='none'
                             value={email}
                             onChangeText={onChangeEmailHandler}
                         />
                     </AreaInput>
 
-                    {loading && <ActivityIndicator size="large" color="#0000ff" />}
+                    {loading && <ActivityIndicator size='large' color='#0000ff' />}
 
-                    <SubmitButton onPress={onSubmitRecoveryCodeHandler}>
+                    <SubmitButton activeOpacity={0.8} onPress={onSubmitRecoveryCodeHandler}>
                         <SubmitText>Send Recovery Code</SubmitText>
                     </SubmitButton>
 
                     <AreaInput>
                         <Input
-                            placeholder="Recovery Code"
-                            autoCapitalize="none"
+                            placeholder='Recovery Code'
+                            autoCapitalize='none'
                             value={recoveryCode}
                             onChangeText={onChangeRecoveryCodeHandler}
                         />
@@ -170,8 +166,8 @@ export default function ForgotPassword() {
 
                     <AreaInput>
                         <Input
-                            placeholder="New Password"
-                            autoCapitalize="none"
+                            placeholder='New Password'
+                            autoCapitalize='none'
                             value={newPassword}
                             secureTextEntry={true}
                             onChangeText={onChangeNewPasswordHandler}
@@ -180,15 +176,15 @@ export default function ForgotPassword() {
 
                     <AreaInput>
                         <Input
-                            placeholder="Confirm New Password"
-                            autoCapitalize="none"
+                            placeholder='Confirm New Password'
+                            autoCapitalize='none'
                             value={confirmNewPassword}
                             secureTextEntry={true}
                             onChangeText={onChangeConfirmNewPasswordHandler}
                         />
                     </AreaInput>
 
-                    <SubmitButton onPress={onSubmitUpdatePasswordHandler}>
+                    <SubmitButton activeOpacity={0.8} onPress={onSubmitUpdatePasswordHandler}>
                         <SubmitText>Update Password</SubmitText>
                     </SubmitButton>
 

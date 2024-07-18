@@ -108,8 +108,8 @@ export default function SignIn() {
 
                     <AreaInput>
                         <Input
-                            placeholder="E-mail"
-                            autoCapitalize="none"
+                            placeholder='E-mail'
+                            autoCapitalize='none'
                             value={email}
                             onChangeText={onChangeEmailHandler}
                         />
@@ -117,8 +117,8 @@ export default function SignIn() {
 
                     <AreaInput>
                         <Input
-                            placeholder="Password"
-                            autoCapitalize="none"
+                            placeholder='Password'
+                            autoCapitalize='none'
                             value={password}
                             secureTextEntry={true}
                             onChangeText={onChangePasswordHandler}
@@ -129,9 +129,9 @@ export default function SignIn() {
                         <LinkText>Forgot my Password</LinkText>
                     </Link>
 
-                    {loading && <ActivityIndicator size="large" color="#0000ff" />}
+                    {loading && <ActivityIndicator size='large' color='#0000ff' />}
 
-                    <SubmitButton activeOpacity={0.7} onPress={onSubmitFormHandler}>
+                    <SubmitButton activeOpacity={0.8} onPress={onSubmitFormHandler}>
                         <SubmitText>Sign In</SubmitText>
                     </SubmitButton>
 
