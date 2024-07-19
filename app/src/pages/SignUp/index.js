@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from "../../contexts/auth";
 
@@ -7,12 +7,6 @@ import {
     PORT,
     ENDPOINT_SIGNUP
 } from '@env';
-
-import {
-    useContext,
-    useState,
-    useEffect
-} from 'react';
 
 import {
     ActivityIndicator,
@@ -44,25 +38,25 @@ export default function SignUp() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const onChangeNameHandler = (name) => {
+    const onChangeNameHandler = useCallback((name) => {
         setName(name);
-    };
+    }, []);
 
-    const onChangeSurnameHandler = (surname) => {
+    const onChangeSurnameHandler = useCallback((surname) => {
         setSurname(surname);
-    }
+    }, []);
 
-    const onChangeEmailHandler = (email) => {
+    const onChangeEmailHandler = useCallback((email) => {
         setEmail(email);
-    };
+    }, []);
 
-    const onChangePasswordHandler = (password) => {
+    const onChangePasswordHandler = useCallback((password) => {
         setPassword(password);
-    };
+    }, []);
 
-    const onChangeConfirmPasswordHandler = (confirmPassword) => {
+    const onChangeConfirmPasswordHandler = useCallback((confirmPassword) => {
         setConfirmPassword(confirmPassword);
-    };
+    }, []);
 
     const onSubmitFormHandler = async (event) => {
 

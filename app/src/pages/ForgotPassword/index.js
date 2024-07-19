@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import {
@@ -37,21 +37,21 @@ export default function ForgotPassword() {
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const onChangeEmailHandler = (email) => {
+    const onChangeEmailHandler = useCallback((email) => {
         setEmail(email);
-    };
+    }, []);
 
-    const onChangeRecoveryCodeHandler = (recoveryCode) => {
+    const onChangeRecoveryCodeHandler = useCallback((recoveryCode) => {
         setRecoveryCode(recoveryCode);
-    };
+    }, []);
 
-    const onChangeNewPasswordHandler = (newPassword) => {
+    const onChangeNewPasswordHandler = useCallback((newPassword) => {
         setNewPassword(newPassword);
-    };
+    }, []);
 
-    const onChangeConfirmNewPasswordHandler = (confirmNewPassword) => {
+    const onChangeConfirmNewPasswordHandler = useCallback((confirmNewPassword) => {
         setConfirmNewPassword(confirmNewPassword);
-    };
+    }, []);
 
     const onSubmitRecoveryCodeHandler = async (event) => {
 

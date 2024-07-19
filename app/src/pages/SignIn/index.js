@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../contexts/auth';
 
@@ -40,14 +40,13 @@ export default function SignIn() {
     const { token, setToken } = useContext(AuthContext);
     const { name, setName } = useContext(AuthContext);
 
-    const onChangeEmailHandler = (email) => {
+    const onChangeEmailHandler = useCallback((email) => {
         setEmail(email);
-    };
+    }, []);
 
-    const onChangePasswordHandler = (password) => {
+    const onChangePasswordHandler = useCallback((password) => {
         setPassword(password);
-    };
-
+    }, []);
 
     const onSubmitFormHandler = async (event) => {
 

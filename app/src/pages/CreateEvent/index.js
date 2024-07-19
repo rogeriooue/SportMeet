@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RNPickerSelect from 'react-native-picker-select';
@@ -28,6 +28,9 @@ import {
 } from '../SignIn/styles';
 
 import {
+    ImageView,
+    SelectedImageView,
+    EventImage,
     DateTimeArea,
     SelectionArea,
     DescriptionInput,
@@ -48,27 +51,27 @@ export default function CreateEvent() {
     const [eventDescription, setEventDescription] = useState('');
     const [selectedModality, setSelectedModality] = useState('');
 
-    const handleEventNameChange = (eventName) => {
+    const handleEventNameChange = useCallback((eventName) => {
         setEventName(eventName);
+    }, []);
+
+    const handleStartDateChange = (event, selectedDate) => {
+        setSelectedStartDate(selectedDate || selectedStartDate);
     };
 
-    const handleStartDateChange = (event, selectedStartDate) => {
-        setSelectedStartDate(selectedStartDate);
+    const handleStartTimeChange = (event, selectedDate) => {
+        setSelectedStartTime(selectedDate || selectedStartTime);
     };
 
-    const handleStartTimeChange = (event, selectedStartTime) => {
-        setSelectedStartTime(selectedStartTime);
+    const handleEndDateChange = (event, selectedDate) => {
+        setSelectedEndDate(selectedDate || selectedEndDate);
     };
 
-    const handleEndDateChange = (event, selectedEndDate) => {
-        setSelectedEndDate(selectedEndDate);
+    const handleEndTimeChange = (event, selectedDate) => {
+        setSelectedEndTime(selectedDate || selectedEndTime);
     };
 
-    const handleEndTimeChange = (event, selectedEndTime) => {
-        setSelectedEndTime(selectedEndTime);
-    };
-
-    const handleSelectImage = async () => {
+    const handleSelectImage = useCallback(async () => {
 
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -96,21 +99,25 @@ export default function CreateEvent() {
         } finally {
             setLoading(false);
         }
+    }, []);
+
+    const handleSelectModality = (value) => {
+        setSelectedModality(value);
     };
 
-    const handlePeopleChange = (numberOfPeople) => {
+    const handlePeopleChange = useCallback((numberOfPeople) => {
         setNumberOfPeople(numberOfPeople);
-    };
+    }, []);
 
-    const handleDescriptionChange = (eventDescription) => {
+    const handleDescriptionChange = useCallback((eventDescription) => {
         setEventDescription(eventDescription);
-    };
+    }, []);
 
     const handleCreateEvent = () => {
         console.log('Creating event...');
     };
 
-    const handleCancelEvent = () => {
+    const handleCancelEvent = useCallback(() => {
         console.log('Cancelling event...');
         setSelectedImage('');
         setEventName('');
@@ -119,11 +126,9 @@ export default function CreateEvent() {
         setSelectedEndDate(new Date());
         setSelectedEndTime(new Date());
         setSelectedModality('');
-        setIsLocationModalOpen(false);
-        setSelectedLocation('');
         setNumberOfPeople('');
         setEventDescription('');
-    };
+    }, []);
 
     return (
         <ScrollView>
@@ -138,22 +143,20 @@ export default function CreateEvent() {
                             <SubmitText>Select Image</SubmitText>
                         </SubmitButton>
 
-                        <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-
+                        <ImageView>
                             {loading && <ActivityIndicator size='large' color='#0000ff' />}
 
                             {selectedImage && (
-                                <View style={{ borderRadius: 8, marginBottom: 15, alignItems: 'center', justifyContent: 'center' }}>
-                                    <Image
+                                <SelectedImageView>
+                                    <EventImage
                                         source={{ uri: selectedImage }}
-                                        style={{ width: '90%', aspectRatio: 1, resizeMode: 'cover', borderRadius: 8, backgroundColor: '#FFF' }}
                                     />
                                     <Link onPress={() => setSelectedImage('')}>
                                         <LinkText>Reset Image</LinkText>
                                     </Link>
-                                </View>
+                                </SelectedImageView>
                             )}
-                        </View>
+                        </ImageView>
 
                         <AreaInput>
                             <Input
@@ -201,7 +204,7 @@ export default function CreateEvent() {
 
                         <SelectionArea>
                             <RNPickerSelect
-                                onValueChange={(value) => setSelectedModality(value)}
+                                onValueChange={handleSelectModality}
                                 value={selectedModality}
                                 placeholder={{
                                     label: 'Select a modality'
@@ -242,7 +245,6 @@ export default function CreateEvent() {
                                 keyboardType='numeric'
                                 placeholder='Number of People'
                                 maxLength={5}
-                                accessible={true}
                             />
                         </AreaInput>
 
@@ -251,6 +253,7 @@ export default function CreateEvent() {
                                 value={eventDescription}
                                 onChangeText={handleDescriptionChange}
                                 placeholder='Event Description'
+                                maxLength={300}
                             />
                         </AreaInput>
 
@@ -266,5 +269,5 @@ export default function CreateEvent() {
                 </Background>
             </TouchableWithoutFeedback>
         </ScrollView >
-    )
+    );
 }

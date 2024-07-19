@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Container, Message, Name, NewLink, LogoutButton, LogoutText, NewText } from './styles';
 import { useNavigation } from '@react-navigation/native';
-import { useState, useContext } from 'react';
 
 import { AuthContext } from '../../contexts/auth';
-import SignIn from '../SignIn';
 
 
 export default function Profile() {

@@ -1,6 +1,27 @@
 import styled from 'styled-components/native';
 
 
+export const ImageView = styled.View`
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+`;
+
+export const SelectedImageView = styled.View`
+    border-radius: 8px;
+    margin-bottom: 15px;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const EventImage = styled.Image`
+    width: 90%;
+    aspect-ratio: 1;
+    resize-mode: cover;
+    border-radius: 8px;
+    background-color: #FFF;
+`;
+
 export const DateTimeArea = styled.View`
     flex-direction: row;
     align-items: center;
