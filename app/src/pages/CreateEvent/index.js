@@ -95,6 +95,7 @@ export default function CreateEvent() {
                 setSelectedImage(result.assets[0].uri);
             }
         } catch (error) {
+            alert('Error selecting image. Please try again.');
             console.error(error);
         } finally {
             setLoading(false);
@@ -114,11 +115,11 @@ export default function CreateEvent() {
     }, []);
 
     const handleCreateEvent = () => {
-        console.log('Creating event...');
+        console.log('Event created.');
+        alert('Event created.');
     };
 
     const handleCancelEvent = useCallback(() => {
-        console.log('Cancelling event...');
         setSelectedImage('');
         setEventName('');
         setSelectedStartDate(new Date());
@@ -128,6 +129,8 @@ export default function CreateEvent() {
         setSelectedModality('');
         setNumberOfPeople('');
         setEventDescription('');
+        console.log('Event cancelled.');
+        alert('Event cancelled.');
     }, []);
 
     return (
