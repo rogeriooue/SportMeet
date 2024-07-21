@@ -50,6 +50,8 @@ export const DescriptionInput = styled.TextInput`
     border-radius: 8px;
     color: #121212;
     margin-bottom: 15px;
+    text-align-vertical: top;
+    text-align: justify;
 `;
 
 export const CancelButton = styled.TouchableOpacity`

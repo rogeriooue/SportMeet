@@ -1,15 +1,17 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RNPickerSelect from 'react-native-picker-select';
+import MapView, { Marker } from 'react-native-maps';
+import {
+    requestForegroundPermissionsAsync,
+    getCurrentPositionAsync,
+    LocationAccuracy
+} from 'expo-location';
 
 import {
     View,
-    Image,
     ActivityIndicator,
-    Text,
-    TouchableOpacity,
-    TextInput,
     ScrollView,
     Platform,
     Keyboard,
@@ -41,48 +43,35 @@ import {
 
 export default function CreateEvent() {
     const [loading, setLoading] = useState(false);
-    const [eventName, setEventName] = useState('');
+    const [imageLoading, setImageLoading] = useState(false);
+    const [mapLoading, setMapLoading] = useState(false);
+
+    const [selectedImage, setSelectedImage] = useState('');
+    const [location, setLocation] = useState(null);
+
     const [selectedStartDate, setSelectedStartDate] = useState(new Date());
     const [selectedStartTime, setSelectedStartTime] = useState(new Date());
     const [selectedEndDate, setSelectedEndDate] = useState(new Date());
     const [selectedEndTime, setSelectedEndTime] = useState(new Date());
-    const [selectedImage, setSelectedImage] = useState('');
-    const [numberOfPeople, setNumberOfPeople] = useState('');
-    const [eventDescription, setEventDescription] = useState('');
     const [selectedModality, setSelectedModality] = useState('');
 
-    const handleEventNameChange = useCallback((eventName) => {
-        setEventName(eventName);
-    }, []);
-
-    const handleStartDateChange = (event, selectedDate) => {
-        setSelectedStartDate(selectedDate || selectedStartDate);
-    };
-
-    const handleStartTimeChange = (event, selectedDate) => {
-        setSelectedStartTime(selectedDate || selectedStartTime);
-    };
-
-    const handleEndDateChange = (event, selectedDate) => {
-        setSelectedEndDate(selectedDate || selectedEndDate);
-    };
-
-    const handleEndTimeChange = (event, selectedDate) => {
-        setSelectedEndTime(selectedDate || selectedEndTime);
-    };
+    const [eventName, setEventName] = useState('');
+    const [numberOfPeople, setNumberOfPeople] = useState('');
+    const [eventDescription, setEventDescription] = useState('');
 
     const handleSelectImage = useCallback(async () => {
-
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         if (status !== 'granted') {
-            alert('Sorry, we need media library permissions to make this work!');
-            return;
+            const { status: newStatus } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (newStatus !== 'granted') {
+                alert('Sorry, we need media library permissions to make this work!');
+                return;
+            }
         }
 
         try {
-            setLoading(true);
-
+            setImageLoading(true);
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
@@ -90,7 +79,6 @@ export default function CreateEvent() {
                 quality: 1,
                 base64: true,
             });
-
             if (!result.canceled) {
                 setSelectedImage(result.assets[0].uri);
             }
@@ -98,28 +86,84 @@ export default function CreateEvent() {
             alert('Error selecting image. Please try again.');
             console.error(error);
         } finally {
-            setLoading(false);
+            setImageLoading(false);
         }
     }, []);
 
-    const handleSelectModality = (value) => {
-        setSelectedModality(value);
-    };
+    const handleSelectLocation = useCallback(async () => {
+        const { status } = await requestForegroundPermissionsAsync();
 
-    const handlePeopleChange = useCallback((numberOfPeople) => {
-        setNumberOfPeople(numberOfPeople);
+        if (status !== 'granted') {
+            const { status: newStatus } = await requestForegroundPermissionsAsync();
+            if (newStatus !== 'granted') {
+                alert('Sorry, we need location permissions to make this work!');
+                return;
+            }
+        }
+
+        try {
+            setMapLoading(true);
+
+            const currentLocation = await getCurrentPositionAsync({
+                accuracy: LocationAccuracy.Highest,
+            });
+            setLocation(currentLocation);
+            console.log(currentLocation);
+        } catch (error) {
+            alert('Error selecting location. Please try again.');
+            console.error(error);
+        } finally {
+            setMapLoading(false);
+        }
+
     }, []);
 
-    const handleDescriptionChange = useCallback((eventDescription) => {
-        setEventDescription(eventDescription);
+    const handleEventNameChange = useCallback((text) => {
+        setEventName(text);
+    }, []);
+
+    const handleStartDateChange = useCallback((event, selectedStartDate) => {
+        setSelectedStartDate(selectedStartDate);
+        console.log(selectedStartDate);
+    }, []);
+
+    const handleStartTimeChange = useCallback((event, selectedStartTime) => {
+        setSelectedStartTime(selectedStartTime);
+        console.log(selectedStartTime);
+    }, []);
+
+    const handleEndDateChange = useCallback((event, selectedEndDate) => {
+        setSelectedEndDate(selectedEndDate);
+        console.log(selectedEndDate);
+    }, []);
+
+    const handleEndTimeChange = useCallback((event, selectedEndTime) => {
+        setSelectedEndTime(selectedEndTime);
+        console.log(selectedEndTime);
+    }, []);
+
+    const handleSelectModality = useCallback((selectedModality) => {
+        setSelectedModality(selectedModality);
+        console.log(selectedModality);
+    }, [selectedModality]);
+
+    const handlePeopleChange = useCallback((value) => {
+        setNumberOfPeople(value);
+    }, []);
+
+    const handleDescriptionChange = useCallback((text) => {
+        setEventDescription(text);
     }, []);
 
     const handleCreateEvent = () => {
+        setLoading(true);
         console.log('Event created.');
         alert('Event created.');
+        setLoading(false);
     };
 
     const handleCancelEvent = useCallback(() => {
+        setLoading(true);
         setSelectedImage('');
         setEventName('');
         setSelectedStartDate(new Date());
@@ -129,6 +173,8 @@ export default function CreateEvent() {
         setSelectedModality('');
         setNumberOfPeople('');
         setEventDescription('');
+        setLocation(null);
+        setLoading(false);
         console.log('Event cancelled.');
         alert('Event cancelled.');
     }, []);
@@ -147,7 +193,7 @@ export default function CreateEvent() {
                         </SubmitButton>
 
                         <ImageView>
-                            {loading && <ActivityIndicator size='large' color='#0000ff' />}
+                            {imageLoading && <ActivityIndicator size='large' color='#0000ff' />}
 
                             {selectedImage && (
                                 <SelectedImageView>
@@ -175,14 +221,16 @@ export default function CreateEvent() {
                             <DateTimePicker
                                 value={selectedStartDate}
                                 mode={'date'}
-                                display='calendar'
+                                display='default'
+                                minimumDate={new Date()}
                                 onChange={handleStartDateChange}
                             />
 
                             <DateTimePicker
                                 value={selectedStartTime}
                                 mode={'time'}
-                                display='inline'
+                                display='default'
+                                is24Hour={true}
                                 onChange={handleStartTimeChange}
                             />
                         </DateTimeArea>
@@ -193,14 +241,16 @@ export default function CreateEvent() {
                             <DateTimePicker
                                 value={selectedEndDate}
                                 mode={'date'}
-                                display='calendar'
+                                display='default'
+                                minimumDate={new Date()}
                                 onChange={handleEndDateChange}
                             />
 
                             <DateTimePicker
                                 value={selectedEndTime}
                                 mode={'time'}
-                                display='inline'
+                                display='default'
+                                is24Hour={true}
                                 onChange={handleEndTimeChange}
                             />
                         </DateTimeArea>
@@ -237,9 +287,48 @@ export default function CreateEvent() {
                             />
                         </SelectionArea>
 
-                        <SubmitButton activeOpacity={0.8}>
+                        <SubmitButton activeOpacity={0.8} onPress={handleSelectLocation}>
                             <SubmitText>Location</SubmitText>
                         </SubmitButton>
+
+                        <View
+                            style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                            {mapLoading && <ActivityIndicator size='large' color='#0000ff' />}
+
+                            {location && (
+                                <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 15 }}>
+                                    <MapView
+                                        style={{
+                                            aspectRatio: 1,
+                                            width: '90%',
+                                            borderRadius: 8,
+                                            padding: 10,
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}
+                                        region={{
+                                            latitude: location.coords.latitude,
+                                            longitude: location.coords.longitude,
+                                            latitudeDelta: 0.007,
+                                            longitudeDelta: 0.007,
+                                        }}
+                                    >
+                                        <Marker
+                                            coordinate={{
+                                                latitude: location.coords.latitude,
+                                                longitude: location.coords.longitude
+                                            }}
+                                            title='Event Location'
+                                            description='This is the event location.'
+                                        />
+                                    </MapView>
+                                    <Link onPress={() => setLocation(null)}>
+                                        <LinkText>Reset Location</LinkText>
+                                    </Link>
+                                </View>
+                            )}
+                        </View>
 
                         <AreaInput>
                             <Input
@@ -252,13 +341,17 @@ export default function CreateEvent() {
                         </AreaInput>
 
                         <AreaInput>
-                            <DescriptionInput
-                                value={eventDescription}
-                                onChangeText={handleDescriptionChange}
-                                placeholder='Event Description'
-                                maxLength={300}
-                            />
+                            <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+                                <DescriptionInput
+                                    value={eventDescription}
+                                    onChangeText={handleDescriptionChange}
+                                    placeholder='Event Description'
+                                    multiline={true}
+                                />
+                            </ScrollView>
                         </AreaInput>
+
+                        {loading && <ActivityIndicator size='large' color='#0000ff' />}
 
                         <SubmitButton activeOpacity={0.8} onPress={handleCreateEvent}>
                             <SubmitText>Create</SubmitText>
