@@ -13,7 +13,6 @@ import {
 import {
     ActivityIndicator,
     ScrollView,
-    Platform,
     Keyboard,
     TouchableWithoutFeedback,
 } from 'react-native';
@@ -29,7 +28,6 @@ import {
 } from '../SignIn/styles';
 
 import {
-    Container,
     ImageArea,
     SelectedImageArea,
     EventImageArea,
@@ -87,10 +85,32 @@ const useLocationPicker = () => {
         setMapLoading(true);
         const currentLocation = await getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
         setLocation(currentLocation);
+        console.log('Initial Location:', currentLocation);
         setMapLoading(false);
     };
 
-    return { location, setLocation, mapLoading, setMapLoading, handleSelectLocation };
+    const handleDragEnd = async (e) => {
+        const { latitude, longitude } = e.nativeEvent.coordinate;
+        const updatedLocation = await getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
+        setLocation({
+            ...updatedLocation,
+            coords: {
+                ...updatedLocation.coords,
+                latitude,
+                longitude
+            }
+        });
+        console.log('Updated Location:', {
+            ...updatedLocation,
+            coords: {
+                ...updatedLocation.coords,
+                latitude,
+                longitude
+            }
+        });
+    };
+
+    return { location, setLocation, mapLoading, setMapLoading, handleSelectLocation, handleDragEnd };
 };
 
 
@@ -98,7 +118,7 @@ export default function CreateEvent() {
     const [loading, setLoading] = useState(false);
 
     const { selectedImage, setSelectedImage, imageLoading, handleSelectImage } = useImagePicker();
-    const { location, setLocation, mapLoading, handleSelectLocation } = useLocationPicker();
+    const { location, setLocation, mapLoading, handleSelectLocation, handleDragEnd } = useLocationPicker();
 
     const [selectedStartDate, setSelectedStartDate] = useState(new Date());
     const [selectedStartTime, setSelectedStartTime] = useState(new Date());
@@ -140,7 +160,7 @@ export default function CreateEvent() {
     }, []);
 
     const handleNumberOfPeople = useCallback((numberOfPeople) => {
-        setNumberOfPeople(setNumberOfPeople);
+        setNumberOfPeople(numberOfPeople);
     }, []);
 
     const handleEventDescription = useCallback((eventDescription) => {
@@ -307,6 +327,8 @@ export default function CreateEvent() {
                                             latitude: location.coords.latitude,
                                             longitude: location.coords.longitude
                                         }}
+                                        draggable
+                                        onDragEnd={handleDragEnd}
                                         title='Event Location'
                                         description='This is the event location.'
                                     />
