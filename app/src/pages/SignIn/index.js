@@ -15,7 +15,6 @@ import {
     Keyboard
 } from 'react-native';
 
-
 import {
     Background,
     Container,
@@ -40,15 +39,15 @@ export default function SignIn() {
     const { token, setToken } = useContext(AuthContext);
     const { name, setName } = useContext(AuthContext);
 
-    const onChangeEmailHandler = useCallback((email) => {
+    const handleEmail = useCallback((email) => {
         setEmail(email);
     }, []);
 
-    const onChangePasswordHandler = useCallback((password) => {
+    const handlePassword = useCallback((password) => {
         setPassword(password);
     }, []);
 
-    const onSubmitFormHandler = async (event) => {
+    const onSubmitSignInHandler = async (event) => {
 
         setLoading(true);
 
@@ -79,14 +78,14 @@ export default function SignIn() {
 
             } else {
                 const { message } = await response.json();
-                throw new Error(`${response.status}, ${message}`);
+                throw new Error(`Status: ${response.status}, ${message}`);
             }
 
         } catch (error) {
             if (error instanceof TypeError || error instanceof SyntaxError) {
-                alert(`Failed to Sign In. Please check your network connection and try again. ${error}`);
+                alert(`Failed to Sign In. Please check your network connection and try again. ${error.message}`);
             } else {
-                alert(`Failed to Sign In. Please try again. ${error}`);
+                alert(`Failed to Sign In. Please try again. ${error.message}`);
             }
             console.error(error);
         } finally {
@@ -108,9 +107,9 @@ export default function SignIn() {
                     <AreaInput>
                         <Input
                             placeholder='E-mail'
-                            autoCapitalize='none'
                             value={email}
-                            onChangeText={onChangeEmailHandler}
+                            onChangeText={handleEmail}
+                            keyboardType='email-address'
                         />
                     </AreaInput>
 
@@ -120,7 +119,7 @@ export default function SignIn() {
                             autoCapitalize='none'
                             value={password}
                             secureTextEntry={true}
-                            onChangeText={onChangePasswordHandler}
+                            onChangeText={handlePassword}
                         />
                     </AreaInput>
 
@@ -130,7 +129,7 @@ export default function SignIn() {
 
                     {loading && <ActivityIndicator size='large' color='#0000ff' />}
 
-                    <SubmitButton activeOpacity={0.8} onPress={onSubmitFormHandler}>
+                    <SubmitButton activeOpacity={0.8} onPress={onSubmitSignInHandler}>
                         <SubmitText>Sign In</SubmitText>
                     </SubmitButton>
 

@@ -38,27 +38,27 @@ export default function SignUp() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const onChangeNameHandler = useCallback((name) => {
+    const handleName = useCallback((name) => {
         setName(name);
     }, []);
 
-    const onChangeSurnameHandler = useCallback((surname) => {
+    const handleSurname = useCallback((surname) => {
         setSurname(surname);
     }, []);
 
-    const onChangeEmailHandler = useCallback((email) => {
+    const handleEmail = useCallback((email) => {
         setEmail(email);
     }, []);
 
-    const onChangePasswordHandler = useCallback((password) => {
+    const handlePassword = useCallback((password) => {
         setPassword(password);
     }, []);
 
-    const onChangeConfirmPasswordHandler = useCallback((confirmPassword) => {
+    const handleConfirmPassword = useCallback((confirmPassword) => {
         setConfirmPassword(confirmPassword);
     }, []);
 
-    const onSubmitFormHandler = async (event) => {
+    const onSubmitSignUpHandler = async (event) => {
 
         setLoading(true);
 
@@ -94,14 +94,14 @@ export default function SignUp() {
 
             } else {
                 const { message } = await response.json();
-                throw new Error(`${response.status}, ${message}`);
+                throw new Error(`Status: ${response.status}, ${message}`);
             }
 
         } catch (error) {
             if (error instanceof TypeError || error instanceof SyntaxError) {
-                alert(`Failed to Sign Up. Please check your network connection and try again. ${error}`);
+                alert(`Failed to Sign Up. Please check your network connection and try again. ${error.message}`);
             } else {
-                alert(`Failed to Sign Up. Please try again. ${error}`);
+                alert(`Failed to Sign Up. Please try again. ${error.message}`);
             }
             console.error(error);
         } finally {
@@ -120,7 +120,7 @@ export default function SignUp() {
                         <Input
                             placeholder='Name'
                             value={name}
-                            onChangeText={onChangeNameHandler}
+                            onChangeText={handleName}
                         />
                     </AreaInput>
 
@@ -128,7 +128,7 @@ export default function SignUp() {
                         <Input
                             placeholder='Surname'
                             value={surname}
-                            onChangeText={onChangeSurnameHandler}
+                            onChangeText={handleSurname}
                         />
                     </AreaInput>
 
@@ -137,7 +137,8 @@ export default function SignUp() {
                             placeholder='E-mail'
                             value={email}
                             autoCapitalize='none'
-                            onChangeText={onChangeEmailHandler}
+                            onChangeText={handleEmail}
+                            keyboardType='email-address'
                         />
                     </AreaInput>
 
@@ -147,7 +148,7 @@ export default function SignUp() {
                             value={password}
                             autoCapitalize='none'
                             secureTextEntry={true}
-                            onChangeText={onChangePasswordHandler}
+                            onChangeText={handlePassword}
                         />
                     </AreaInput>
 
@@ -157,13 +158,13 @@ export default function SignUp() {
                             value={confirmPassword}
                             autoCapitalize='none'
                             secureTextEntry={true}
-                            onChangeText={onChangeConfirmPasswordHandler}
+                            onChangeText={handleConfirmPassword}
                         />
                     </AreaInput>
 
                     {loading && <ActivityIndicator size='large' color='#0000ff' />}
 
-                    <SubmitButton activeOpacity={0.8} onPress={onSubmitFormHandler}>
+                    <SubmitButton activeOpacity={0.8} onPress={onSubmitSignUpHandler}>
                         <SubmitText>Sign Up</SubmitText>
                     </SubmitButton>
 

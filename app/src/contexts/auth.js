@@ -40,7 +40,7 @@ function AuthProvider({ children }) {
         setName(null);
         setToken(null);
 
-        console.log('User logged out successfully');
+        console.log('User sign out successfully');
 
         await AsyncStorage.clear()
             .then(() => {

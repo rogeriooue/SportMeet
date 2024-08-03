@@ -37,19 +37,19 @@ export default function ForgotPassword() {
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const onChangeEmailHandler = useCallback((email) => {
+    const handleEmail = useCallback((email) => {
         setEmail(email);
     }, []);
 
-    const onChangeRecoveryCodeHandler = useCallback((recoveryCode) => {
+    const handleRecoveryCode = useCallback((recoveryCode) => {
         setRecoveryCode(recoveryCode);
     }, []);
 
-    const onChangeNewPasswordHandler = useCallback((newPassword) => {
+    const handleNewPassword = useCallback((newPassword) => {
         setNewPassword(newPassword);
     }, []);
 
-    const onChangeConfirmNewPasswordHandler = useCallback((confirmNewPassword) => {
+    const handleConfirmNewPassword = useCallback((confirmNewPassword) => {
         setConfirmNewPassword(confirmNewPassword);
     }, []);
 
@@ -68,8 +68,6 @@ export default function ForgotPassword() {
                 })
             });
 
-            const { message } = await response.json();
-
             if (response.ok) {
 
                 console.log(message);
@@ -77,14 +75,15 @@ export default function ForgotPassword() {
                 alert(`Status: ${response.status}, Message: ${message}`);
 
             } else {
+                const { message } = await response.json();
                 throw new Error(`Status: ${response.status}, Message: ${message}`);
             }
 
         } catch (error) {
             if (error instanceof TypeError || error instanceof SyntaxError) {
-                alert(`Forgot Password Failed. Please check your network connection and try again. ${error}`);
+                alert(`Forgot Password Failed. Please check your network connection and try again. ${error.message}`);
             } else {
-                alert(`Forgot Password Failed. Please try again. ${error}`);
+                alert(`Forgot Password Failed. Please try again. ${error.message}`);
             }
             console.error(error);
         } finally {
@@ -110,22 +109,21 @@ export default function ForgotPassword() {
                 })
             });
 
-            const { message } = await response.json();
-
             if (response.ok) {
                 alert(`Status: ${response.status}, Message: ${message}`);
                 console.log(message);
                 navigation.navigate('Sign In');
 
             } else {
+                const { message } = await response.json();
                 throw new Error(`Status: ${response.status}, Message: ${message}`);
             }
 
         } catch (error) {
             if (error instanceof TypeError || error instanceof SyntaxError) {
-                alert(`Update Password Failed. Please check your network connection and try again. ${error}`);
+                alert(`Update Password Failed. Please check your network connection and try again. ${error.message}`);
             } else {
-                alert(`Update Password Failed. Please try again. ${error}`);
+                alert(`Update Password Failed. Please try again. ${error.message}`);
             }
             console.error(error);
         } finally {
@@ -143,9 +141,9 @@ export default function ForgotPassword() {
                     <AreaInput>
                         <Input
                             placeholder='E-mail'
-                            autoCapitalize='none'
                             value={email}
-                            onChangeText={onChangeEmailHandler}
+                            onChangeText={handleEmail}
+                            keyboardType='email-address'
                         />
                     </AreaInput>
 
@@ -160,7 +158,7 @@ export default function ForgotPassword() {
                             placeholder='Recovery Code'
                             autoCapitalize='none'
                             value={recoveryCode}
-                            onChangeText={onChangeRecoveryCodeHandler}
+                            onChangeText={handleRecoveryCode}
                         />
                     </AreaInput>
 
@@ -170,7 +168,7 @@ export default function ForgotPassword() {
                             autoCapitalize='none'
                             value={newPassword}
                             secureTextEntry={true}
-                            onChangeText={onChangeNewPasswordHandler}
+                            onChangeText={handleNewPassword}
                         />
                     </AreaInput>
 
@@ -180,7 +178,7 @@ export default function ForgotPassword() {
                             autoCapitalize='none'
                             value={confirmNewPassword}
                             secureTextEntry={true}
-                            onChangeText={onChangeConfirmNewPasswordHandler}
+                            onChangeText={handleConfirmNewPassword}
                         />
                     </AreaInput>
 

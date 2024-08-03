@@ -27,6 +27,7 @@
     "nodemailer": "^6.9.13",
     "nodemailer-express-handlebars": "^6.1.2",
     "path": "^0.12.7",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "winston": "^3.13.0"
   },
   "devDependencies": {
